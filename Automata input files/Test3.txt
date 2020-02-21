@@ -1,0 +1,20 @@
+# NFA
+
+alphabet: ab
+states: A,B
+final: B 
+
+transitions: 
+A,a --> A 
+A,b --> A 
+A,b --> B 
+end.
+
+dfa:n 
+finite:n 
+
+words: 
+bbbbbbbbbb,y 
+a,y 
+ab,n 
+end.
