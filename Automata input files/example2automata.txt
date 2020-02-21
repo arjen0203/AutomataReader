@@ -1,0 +1,20 @@
+# automaton for regular expression (a|b*) 
+
+alphabet: 01
+states: A,B,C,D,E,F,G,H,I,J
+final: J
+
+transitions:
+A,_ --> B
+B,_ --> C
+B,_ --> D
+C,1 --> E
+E,_ --> G
+D,0 --> F
+F,_ --> G
+G,_ --> H
+H,_ --> I
+I,1 --> J
+G,_ --> A
+A,_ --> H
+end.

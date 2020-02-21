@@ -1,0 +1,8 @@
+# automaton for regular expression (a|b*) 
+
+alphabet:
+states:
+final:
+
+transitions:
+end.

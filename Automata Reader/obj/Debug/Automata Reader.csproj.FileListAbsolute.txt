@@ -7,3 +7,12 @@ C:\Users\20182942\Documents\Fontys\S4 AUT\Automata Reader\Automata Reader\obj\De
 C:\Users\20182942\Documents\Fontys\S4 AUT\Automata Reader\Automata Reader\obj\Debug\Automata Reader.csproj.GenerateResource.cache
 C:\Users\20182942\Documents\Fontys\S4 AUT\Automata Reader\Automata Reader\obj\Debug\Automata Reader.exe
 C:\Users\20182942\Documents\Fontys\S4 AUT\Automata Reader\Automata Reader\obj\Debug\Automata Reader.pdb
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\bin\Debug\Automata Reader.exe.config
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\bin\Debug\Automata Reader.exe
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\bin\Debug\Automata Reader.pdb
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csprojAssemblyReference.cache
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata_Reader.Form1.resources
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata_Reader.Properties.Resources.resources
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.GenerateResource.cache
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.exe
+C:\Users\20182942\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.pdb

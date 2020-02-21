@@ -139,7 +139,7 @@ namespace Automata_Reader
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\Automata Reader\\Automate Picture\\" + "AutomataPicture.dot";
+            pathAndName = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -192,7 +192,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\Automata Reader\\Automate Picture";
+            dot.StartInfo.WorkingDirectory = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataPicture.dot";
 
@@ -200,7 +200,7 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\Automata Reader\\Automate Picture\\AutomataPicture.dot.png";
+            pictureBox.ImageLocation = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
         }
         public bool GraphIsDFA()
         {
