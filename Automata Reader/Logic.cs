@@ -11,14 +11,14 @@ namespace Automata_Reader
 {
     class Logic
     {
-        public List<char> alphabet { get; private set; }
-        public List<Node> nodes { get; private set; }
-
+        public Automata automata { get; private set; }
         public void ReadLines(string path)
         {
             FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
 
             StreamReader reader = new StreamReader(fileStream);
+
+            automata = new Automata();
 
             string text = reader.ReadLine();
             while (text != null)
@@ -63,19 +63,19 @@ namespace Automata_Reader
 
         public void CreateAlphabet(string text)
         {
-            alphabet = new List<char>();
+            automata.alphabet = new List<char>();
 
             string newText = text.Substring(9).Trim();
 
             foreach (char s in newText)
             {
-                alphabet.Add(s);
+                automata.alphabet.Add(s);
             }
         }
 
         public void CreateNodes(string text)
         {
-            nodes = new List<Node>();
+            automata.nodes = new List<Node>();
 
             string newText = text.Substring(7).Trim();
             string[] nodeNames = newText.Split(',');
@@ -84,7 +84,7 @@ namespace Automata_Reader
 
             foreach (string name in nodeNames)
             {
-                if (!name.Equals("")) nodes.Add(new Node(firstNode, name));
+                if (!name.Equals("")) automata.nodes.Add(new Node(firstNode, name));
                 if (firstNode) firstNode = false;
             }
         }
@@ -96,7 +96,7 @@ namespace Automata_Reader
 
             foreach (string name in finalNodeNames)
             {
-                foreach (Node node in nodes)
+                foreach (Node node in automata.nodes)
                 {
                     if (name.Equals(node.Name))
                     {
@@ -122,11 +122,18 @@ namespace Automata_Reader
                 wichState = text.Trim().Split(',');
                 wichConnection = wichState[1].Trim().Split(new string[] { "-->" }, StringSplitOptions.None);
 
-                foreach (Node node in nodes)
+                foreach (Node node in automata.nodes)
                 {
                     if (wichState[0].Equals(node.Name))
                     {
-                        node.Connections.Add(new Connection(wichConnection[0].Trim().ToCharArray()[0], wichConnection[1].Trim()));
+                        foreach (Node connNode in automata.nodes)
+                        {
+                            if (wichConnection[1].Trim().Equals(connNode.Name))
+                            {
+                                node.Connections.Add(new Connection(wichConnection[0].Trim().ToCharArray()[0], connNode));
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
@@ -159,7 +166,7 @@ namespace Automata_Reader
 
             dotString += "digraph myAutomaton { \nrankdir=LR; \n\"\" [shape=none] \n";
 
-            foreach (Node node in nodes)
+            foreach (Node node in automata.nodes)
             {
                 string shape = "circle";
                 if (node.Final) shape = "doublecircle";
@@ -168,16 +175,16 @@ namespace Automata_Reader
 
             dotString += "\n";
 
-            foreach (Node node in nodes)
+            foreach (Node node in automata.nodes)
             {
                 if (node.Starting) dotString += $"\"\" -> \"{node.Name}\" \n";
             }
 
-            foreach (Node node in nodes)
+            foreach (Node node in automata.nodes)
             {
                 foreach (Connection conn in node.Connections)
                 {
-                    dotString += $"\"{node.Name}\" -> \"{conn.ToNodeName}\" [label=\"{conn.Symbol}\"] \n";
+                    dotString += $"\"{node.Name}\" -> \"{conn.ToNode.Name}\" [label=\"{conn.Symbol}\"] \n";
                 }
             }
 
@@ -204,10 +211,10 @@ namespace Automata_Reader
         }
         public bool GraphIsDFA()
         {
-            int connectionsNeeded = alphabet.Count;
+            int connectionsNeeded = automata.alphabet.Count;
             int startNodes = 0;
 
-            foreach (Node node in nodes)
+            foreach (Node node in automata.nodes)
             {
                 if (node.Starting) startNodes++;
                 int connectionsAmount = 0;

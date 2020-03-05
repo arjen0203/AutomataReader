@@ -9,12 +9,12 @@ namespace Automata_Reader
     class Connection
     {
         public char Symbol { get; private set; }
-        public string ToNodeName { get; private set; }
+        public Node ToNode { get; private set; }
         
-        public Connection(char symbol, string toNodeName)
+        public Connection(char symbol, Node toNode)
         {
             this.Symbol = symbol;
-            this.ToNodeName = toNodeName;
+            this.ToNode = toNode;
         }
     }
 }
