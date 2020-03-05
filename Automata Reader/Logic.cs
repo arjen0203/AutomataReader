@@ -12,6 +12,7 @@ namespace Automata_Reader
     class Logic
     {
         public Automata automata { get; private set; }
+        public Automata automataMadeDFA { get; private set; }
         public void ReadLines(string path)
         {
             FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -234,5 +235,42 @@ namespace Automata_Reader
 
             return true;
         }
+        public void ConvertNFA()
+        {
+            List<SymbolConnections> symbolConnections = new List<SymbolConnections>();
+
+            foreach (Node node in automata.nodes)
+            {
+                foreach (char symbol in automata.alphabet)
+                {
+                    foreach (Connection connection in node.Connections)
+                    {
+                        if (symbol == connection.Symbol)
+                        {
+                            SymbolConnections symbolConn = new SymbolConnections();
+                            symbolConn.startingNode = node;
+                            symbolConn.toPossibleNodes = new List<Node>() { connection.ToNode };
+                            AddEpsilonTransitions(symbolConn.toPossibleNodes);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddEpsilonTransitions(List<Node> possibleNodesList)
+        {
+            int startCount = possibleNodesList.Count;
+
+            foreach (Node node in possibleNodesList)
+            {
+                foreach (Connection connection in node.Connections)
+                {
+                    if (connection.Symbol == '_' && !possibleNodesList.Contains(connection.ToNode)) possibleNodesList.Add(connection.ToNode);
+                }
+            }
+
+            if (startCount != possibleNodesList.Count) AddEpsilonTransitions(possibleNodesList);
+        }
+
     }
 }
