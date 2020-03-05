@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Automata_Reader
 {
-    class Automata
+    class DFAautomata
     {
         public List<char> alphabet { get; set; }
-        public List<Node> nodes { get; set; }
+        public List<DFAnode> dfaNodes { get; set; }
 
-        public Automata()
+        public DFAautomata()
         {
             this.alphabet = new List<char>();
-            this.nodes = new List<Node>();
+            this.dfaNodes = new List<DFAnode>();
         }
     }
 }

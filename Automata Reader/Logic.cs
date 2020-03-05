@@ -64,8 +64,6 @@ namespace Automata_Reader
 
         public void CreateAlphabet(string text)
         {
-            automata.alphabet = new List<char>();
-
             string newText = text.Substring(9).Trim();
 
             foreach (char s in newText)
@@ -76,8 +74,6 @@ namespace Automata_Reader
 
         public void CreateNodes(string text)
         {
-            automata.nodes = new List<Node>();
-
             string newText = text.Substring(7).Trim();
             string[] nodeNames = newText.Split(',');
 
@@ -235,17 +231,104 @@ namespace Automata_Reader
 
             return true;
         }
-        public void GetAllTransitionsNFA()
+
+        public void ConvertNFAtoDFA()
         {
-            List<SymbolConnections> symbolConnections = new List<SymbolConnections>();
-            List<char> alphabetWithEpsilon = automata.alphabet;
+            List<SymbolConnection> symbolConnections = new List<SymbolConnection>();
+
+            GetAllTransitionsNFA(symbolConnections);
+
+            DFAautomata dFAautomata = new DFAautomata();
+            dFAautomata.alphabet = new List<char>(automata.alphabet);
+
+            //starting node
+            List<Node> startingNode = new List<Node>() { automata.nodes[0] };
+
+            for (int i = 0; i < startingNode.Count; i++)
+            {
+                foreach (SymbolConnection symbConn in symbolConnections)
+                {
+                    if (symbConn.symbol == '_' && symbConn.startingNode == automata.nodes[0])
+                    {
+                        foreach (Node node in symbConn.toPossibleNodes)
+                        {
+                            if (!startingNode.Contains(node)) startingNode.Add(node);
+                        }
+                    }
+                }
+            }
+
+            dFAautomata.dfaNodes.Add(new DFAnode(startingNode.OrderBy(a => a.Name).ToList()));
+            dFAautomata.dfaNodes[0].CreateName();
+            
+
+            for (int i = 0; i < dFAautomata.dfaNodes.Count; i++)
+            {
+                foreach (char symbol in dFAautomata.alphabet)
+                {
+                    List<Node> newNode = new List<Node>();
+                    DFAconnection newConnection = new DFAconnection(symbol);
+
+                    foreach (Node node in dFAautomata.dfaNodes[i].nodesTogether)
+                    {
+                        foreach (SymbolConnection symbConn in symbolConnections)
+                        {
+                            if (node == symbConn.startingNode && symbConn.symbol == symbol && !newNode.Contains(node))
+                            {
+                                foreach (Node toNode in symbConn.toPossibleNodes)
+                                {
+                                    if (!newNode.Contains(toNode)) newNode.Add(toNode);
+                                }
+                            }
+                        }
+                    }
+                    foreach (Node node in newNode)
+                    {
+                        foreach (SymbolConnection symbConn in symbolConnections)
+                        {
+                            if (node == symbConn.startingNode && symbConn.symbol == '_' && !newNode.Contains(node))
+                            {
+                                foreach (Node toNode in symbConn.toPossibleNodes)
+                                {
+                                    if (!newNode.Contains(toNode)) newNode.Add(toNode);
+                                }
+                            }
+                        }
+                    }
+                    DFAnode tempNode = new DFAnode(newNode.OrderBy(a => a.Name).ToList());
+                    bool nodeExists = false;
+                    foreach (DFAnode node in dFAautomata.dfaNodes)
+                    {
+                        if (node.Name.Equals(tempNode.Name))
+                        {
+                            newConnection.ToNode = node;
+                            node.Connections.Add(newConnection);
+                            nodeExists = true;
+                        }
+                    }
+                    if (!nodeExists)
+                    {
+                        newConnection.ToNode = tempNode;
+                        tempNode.Connections.Add(newConnection);
+                        dFAautomata.dfaNodes.Add(tempNode);
+                    }
+                }
+
+            }
+           
+        }
+
+        public void GetAllTransitionsNFA(List<SymbolConnection> symbolConnections)
+        {
+            List<char> alphabetWithEpsilon = new List<char>(automata.alphabet);
             alphabetWithEpsilon.Add('_');
+            Node sinkNode = new Node(false, "SINK");
 
             foreach (Node node in automata.nodes)
             {
-                foreach (char symbol in automata.alphabet)
+                foreach (char symbol in alphabetWithEpsilon)
                 {
-                    SymbolConnections symbolConn = new SymbolConnections();
+                    SymbolConnection symbolConn = new SymbolConnection();
                     symbolConn.startingNode = node;
                     symbolConn.symbol = symbol;
 
@@ -258,6 +341,8 @@ namespace Automata_Reader
                             AddEpsilonTransitions(symbolConn.toPossibleNodes);
                         }
                     }
+                    if (symbolConn.toPossibleNodes == null) symbolConn.toPossibleNodes = new List<Node>() { sinkNode };
+
                     symbolConnections.Add(symbolConn);
                 }
             }

@@ -35,11 +35,15 @@ namespace Automata_Reader
                 Logic.CreateAutomatePicture();
                 Logic.RunGraphicviz(automataPictureBox);
                 DFACheckBox.Checked = Logic.GraphIsDFA();
+
             } catch
             {
                 MessageBox.Show("Could not create automata");
             }
-            if (!DFACheckBox.Checked) Logic.GetAllTransitionsNFA();
+            if (!DFACheckBox.Checked)
+            {
+                Logic.ConvertNFAtoDFA();
+            }
         }
     }
 }

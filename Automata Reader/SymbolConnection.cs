@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Automata_Reader
 {
-    class SymbolConnections
+    class SymbolConnection
     {
         public Node startingNode { get; set; }
         public char symbol { get; set; }
