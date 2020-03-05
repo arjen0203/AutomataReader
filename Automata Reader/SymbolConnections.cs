@@ -8,5 +8,8 @@ namespace Automata_Reader
 {
     class SymbolConnections
     {
+        public Node startingNode { get; set; }
+        public char symbol { get; set; }
+        public List<Node> toPossibleNodes { get; set; }
     }
 }

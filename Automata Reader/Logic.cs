@@ -235,24 +235,30 @@ namespace Automata_Reader
 
             return true;
         }
-        public void ConvertNFA()
+        public void GetAllTransitionsNFA()
         {
             List<SymbolConnections> symbolConnections = new List<SymbolConnections>();
+            List<char> alphabetWithEpsilon = automata.alphabet;
+            alphabetWithEpsilon.Add('_');
 
             foreach (Node node in automata.nodes)
             {
                 foreach (char symbol in automata.alphabet)
                 {
+                    SymbolConnections symbolConn = new SymbolConnections();
+                    symbolConn.startingNode = node;
+                    symbolConn.symbol = symbol;
+
                     foreach (Connection connection in node.Connections)
                     {
                         if (symbol == connection.Symbol)
                         {
-                            SymbolConnections symbolConn = new SymbolConnections();
-                            symbolConn.startingNode = node;
-                            symbolConn.toPossibleNodes = new List<Node>() { connection.ToNode };
+                            if (symbolConn.toPossibleNodes == null) symbolConn.toPossibleNodes = new List<Node>();
+                            symbolConn.toPossibleNodes.Add(connection.ToNode);
                             AddEpsilonTransitions(symbolConn.toPossibleNodes);
                         }
                     }
+                    symbolConnections.Add(symbolConn);
                 }
             }
         }
@@ -261,15 +267,13 @@ namespace Automata_Reader
         {
             int startCount = possibleNodesList.Count;
 
-            foreach (Node node in possibleNodesList)
+            for (int i = 0; i < possibleNodesList.Count; i++)
             {
-                foreach (Connection connection in node.Connections)
+                foreach (Connection connection in possibleNodesList[i].Connections)
                 {
                     if (connection.Symbol == '_' && !possibleNodesList.Contains(connection.ToNode)) possibleNodesList.Add(connection.ToNode);
                 }
             }
-
-            if (startCount != possibleNodesList.Count) AddEpsilonTransitions(possibleNodesList);
         }
 
     }

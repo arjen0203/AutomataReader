@@ -39,8 +39,7 @@ namespace Automata_Reader
             {
                 MessageBox.Show("Could not create automata");
             }
-            
-            
+            if (!DFACheckBox.Checked) Logic.GetAllTransitionsNFA();
         }
     }
 }

@@ -38,9 +38,10 @@
             // 
             // ReadFileBtn
             // 
-            this.ReadFileBtn.Location = new System.Drawing.Point(404, 28);
+            this.ReadFileBtn.Location = new System.Drawing.Point(303, 23);
+            this.ReadFileBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ReadFileBtn.Name = "ReadFileBtn";
-            this.ReadFileBtn.Size = new System.Drawing.Size(75, 23);
+            this.ReadFileBtn.Size = new System.Drawing.Size(56, 19);
             this.ReadFileBtn.TabIndex = 0;
             this.ReadFileBtn.Text = "Read file";
             this.ReadFileBtn.UseVisualStyleBackColor = true;
@@ -48,17 +49,21 @@
             // 
             // pathBox
             // 
-            this.pathBox.Location = new System.Drawing.Point(51, 29);
+            this.pathBox.Location = new System.Drawing.Point(38, 24);
+            this.pathBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pathBox.Name = "pathBox";
-            this.pathBox.Size = new System.Drawing.Size(347, 22);
+            this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
+            this.pathBox.Text = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automata input files\\exa" +
+    "mpleautomata.txt";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(48, 9);
+            this.label1.Location = new System.Drawing.Point(36, 7);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 17);
+            this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Input file path:";
             // 
@@ -66,16 +71,18 @@
             // 
             this.DFACheckBox.AutoSize = true;
             this.DFACheckBox.Enabled = false;
-            this.DFACheckBox.Location = new System.Drawing.Point(51, 57);
+            this.DFACheckBox.Location = new System.Drawing.Point(38, 46);
+            this.DFACheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.DFACheckBox.Name = "DFACheckBox";
-            this.DFACheckBox.Size = new System.Drawing.Size(57, 21);
+            this.DFACheckBox.Size = new System.Drawing.Size(47, 17);
             this.DFACheckBox.TabIndex = 3;
             this.DFACheckBox.Text = "DFA";
             this.DFACheckBox.UseVisualStyleBackColor = true;
             // 
             // automataPictureBox
             // 
-            this.automataPictureBox.Location = new System.Drawing.Point(51, 107);
+            this.automataPictureBox.Location = new System.Drawing.Point(38, 87);
+            this.automataPictureBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.automataPictureBox.Name = "automataPictureBox";
             this.automataPictureBox.Size = new System.Drawing.Size(428, 293);
             this.automataPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -84,14 +91,15 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.automataPictureBox);
             this.Controls.Add(this.DFACheckBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pathBox);
             this.Controls.Add(this.ReadFileBtn);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);

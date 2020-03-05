@@ -1,7 +1,7 @@
 # automaton for regular expression (a|b*) 
 
 alphabet: ab
-states: A,B,C,D,E,F,G,H,J,K
+states: A,B,C,D,G,H,J,K
 final: J
 
 transitions:
