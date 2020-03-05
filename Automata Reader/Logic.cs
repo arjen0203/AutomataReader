@@ -312,6 +312,7 @@ namespace Automata_Reader
                         tempNode.Connections.Add(newConnection);
                         dFAautomata.dfaNodes.Add(tempNode);
                     }
+                    
                 }
 
             }
@@ -323,6 +324,7 @@ namespace Automata_Reader
             List<char> alphabetWithEpsilon = new List<char>(automata.alphabet);
             alphabetWithEpsilon.Add('_');
             Node sinkNode = new Node(false, "SINK");
+            bool containsSink = false;
 
             foreach (Node node in automata.nodes)
             {
@@ -341,9 +343,24 @@ namespace Automata_Reader
                             AddEpsilonTransitions(symbolConn.toPossibleNodes);
                         }
                     }
-                    if (symbolConn.toPossibleNodes == null) symbolConn.toPossibleNodes = new List<Node>() { sinkNode };
+                    if (symbolConn.toPossibleNodes == null)
+                    {
+                        symbolConn.toPossibleNodes = new List<Node>() { sinkNode };
+                        containsSink = true;
+                    }
 
                     symbolConnections.Add(symbolConn);
+                }
+            }
+            if (containsSink == true)
+            {
+                foreach (char symbol in automata.alphabet)
+                {
+                    SymbolConnection sinkConn = new SymbolConnection();
+                    sinkConn.startingNode = sinkNode;
+                    sinkConn.symbol = symbol;
+                    sinkConn.toPossibleNodes = new List<Node>() { sinkNode };
+                    symbolConnections.Add(sinkConn);
                 }
             }
         }
