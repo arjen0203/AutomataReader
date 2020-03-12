@@ -27,10 +27,10 @@ namespace Automata_Reader
 
         private void ReadFileBtn_Click(object sender, EventArgs e)
         {
-            // C:\Users\20182942\Documents\Fontys\S4 AUT\Automata Reader\Automata input files\Test.txt
 
             string path = pathBox.Text;
-            try{
+            try
+            {
                 Logic.ReadLines(path);
                 Logic.CreateAutomatePicture();
                 DFACheckBox.Checked = Logic.GraphIsDFA();
@@ -41,11 +41,20 @@ namespace Automata_Reader
                     Logic.ConvertNFAtoDFA();
                     Logic.CreateDFAAutomatePicture();
                     Logic.RunGraphicvizDFA(DFAconvertBox);
+                    Logic.CreateDFAfile();
                 }
-            } catch
+                finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
+                testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked);
+
+        } catch
             {
                 MessageBox.Show("Could not create automata");
             }
+
+}
+
+        private void automataPictureBox_Click(object sender, EventArgs e)
+        {
 
         }
     }

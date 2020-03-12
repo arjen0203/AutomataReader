@@ -31,10 +31,9 @@ namespace Automata_Reader
 
             foreach (Node node in nodesTogether)
             {
-                nodesName += node.Name.Trim() + ",";
+                nodesName += "{" + node.Name.Trim() + "}";
             }
 
-            //this.Name = nodesName.Substring(0, nodesName.Length - 1);
             this.Name = nodesName;
         }
     }

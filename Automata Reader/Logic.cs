@@ -57,6 +57,24 @@ namespace Automata_Reader
                     text = reader.ReadLine();
                     continue;
                 }
+                if (text.StartsWith("dfa:"))
+                {
+                    SetDFATest(text);
+                    text = reader.ReadLine();
+                    continue;
+                }
+                if (text.StartsWith("finite:"))
+                {
+                    SetFiniteTest(text);
+                    text = reader.ReadLine();
+                    continue;
+                }
+                if (text.StartsWith("words:"))
+                {
+                    SetTestWords(reader);
+                    text = reader.ReadLine();
+                    continue;
+                }
 
                 text = reader.ReadLine();
             }
@@ -139,11 +157,154 @@ namespace Automata_Reader
             }
         }
 
+        public void SetDFATest(string text)
+        {
+            string[] awnsersplit = text.Trim().Split(':');
+
+            if (awnsersplit[1].Trim().Equals("y")) automata.dfaTest = true;
+            else automata.dfaTest = false;
+        }
+
+        public void SetFiniteTest(string text)
+        {
+            string[] awnsersplit = text.Trim().Split(':');
+
+            if (awnsersplit[1].Trim().Equals("y")) automata.finiteTest = true;
+            else automata.finiteTest = false;
+        }
+
+        public void SetTestWords(StreamReader reader)
+        {
+            string text = reader.ReadLine();
+
+            //split for accaptence and word
+            string[] wordAndAcc;
+
+            while (!text.Trim().Equals("end."))
+            {
+                wordAndAcc = text.Trim().Split(',');
+
+                bool acceptence = false;
+                if (wordAndAcc[1].Trim().Equals("y")) acceptence = true;
+
+                automata.testWords.Add(new TestWord(wordAndAcc[0], acceptence));
+
+                text = reader.ReadLine();
+            }
+        }
+
+        public bool IsFinite(bool automataIsDfa)
+        {
+            bool finite = true;
+
+            if (automataIsDfa)
+            {
+                foreach (Node node in automata.nodes)
+                {
+                    if (node.Final)
+                    {
+                        foreach (Connection con in node.Connections)
+                        {
+                            if (con.ToNode == node) finite = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (DFAnode node in dFAautomata.dfaNodes)
+                {
+                    if (node.Final)
+                    {
+                        foreach (DFAconnection con in node.Connections)
+                        {
+                            if (con.ToNode == node) finite = false;
+                        }
+                    }
+                }
+            }
+
+            return finite;
+        }
+
+        public string TestOutputString(bool automataIsDFA, bool automataIsFinite)
+        {
+            string temp = "";
+
+            if (automata.dfaTest == true && automataIsDFA == true) temp += "dfa: y == true" + Environment.NewLine;
+            else if (automata.dfaTest == true && automataIsDFA == false) temp += "dfa: y == false" + Environment.NewLine;
+            else if (automata.dfaTest == false && automataIsDFA == false) temp += "dfa: n == true" + Environment.NewLine;
+            else if (automata.dfaTest == false && automataIsDFA == true) temp += "dfa: n == false" + Environment.NewLine;
+
+            if (automata.finiteTest == true && automataIsFinite == true) temp += "finite: y == true" + Environment.NewLine;
+            else if (automata.finiteTest == true && automataIsFinite == false) temp += "finite: y == false" + Environment.NewLine;
+            else if (automata.finiteTest == false && automataIsFinite == false) temp += "finite: n == true" + Environment.NewLine;
+            else if (automata.finiteTest == false && automataIsFinite == true) temp += "finite: n == false" + Environment.NewLine;
+
+            temp += Environment.NewLine;
+
+            foreach (TestWord word in automata.testWords)
+            {
+                temp += TestWordAccaptence(word.word, word.accapted, automataIsDFA) + Environment.NewLine;
+            }
+
+            return temp;
+        }
+
+        public string TestWordAccaptence(char[] word, bool testOutcome, bool automataIsDfa)
+        {
+            string temp = "";
+            bool accepted = false;
+
+            if (automataIsDfa)
+            {
+                Node currentNode = automata.nodes[0];
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    Connection thisConn = new Connection('q', null);
+
+                    foreach (Connection conn in currentNode.Connections)
+                    {
+                        if (conn.Symbol == word[i]) thisConn = conn;
+                    }
+
+                    currentNode = thisConn.ToNode;
+                }
+                if (currentNode.Final) accepted = true;
+            }
+            else
+            {
+                DFAnode currentNode = dFAautomata.dfaNodes[0];
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    DFAconnection thisConn = new DFAconnection('q');
+
+                    foreach (DFAconnection conn in currentNode.Connections)
+                    {
+                        if (conn.Symbol == word[i]) thisConn = conn;
+                    }
+
+                    currentNode = thisConn.ToNode;
+                }
+                if (currentNode.Final) accepted = true;
+            }
+
+
+            if (accepted == true && testOutcome == true) temp = new string(word) + ",y == true";
+            else if (accepted == false && testOutcome == true) temp = new string(word) + ",y == false";
+            else if (accepted == true && testOutcome == false) temp = new string(word) + ",n == false";
+            else if (accepted == false && testOutcome == false) temp = new string(word) + ",n == true";
+
+            return temp;
+        }
+
         public void CreateAutomatePicture()
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -196,7 +357,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
+            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataPicture.dot";
 
@@ -204,7 +365,7 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
+            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
         }
 
         public bool GraphIsDFA()
@@ -400,7 +561,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
+            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataConvertedDFAPicture.dot";
 
@@ -408,14 +569,14 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
+            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
         }
 
         public void CreateDFAAutomatePicture()
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataConvertedDFAPicture.dot";
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataConvertedDFAPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -460,6 +621,77 @@ namespace Automata_Reader
             dotString += "}";
 
             return dotString;
+        }
+        public void CreateDFAfile()
+        {
+            string pathAndName;
+
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\DFAoutput\\" + "DFAoutput.txt";
+
+            FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
+
+            StreamWriter writer = new StreamWriter(fileStream);
+
+            string outputDot = GetDFAString();
+
+            writer.WriteLine(outputDot);
+
+            writer.Close();
+            fileStream.Close();
+        }
+        public string GetDFAString()
+        {
+            string temp = "alphabet: " + new string(automata.alphabet.ToArray()) + Environment.NewLine + "states: ";
+
+            for (int i = 0; i < dFAautomata.dfaNodes.Count; i++)
+            {
+                temp += dFAautomata.dfaNodes[i].Name;
+                if (i != dFAautomata.dfaNodes.Count - 1) temp += ",";
+            }
+
+            temp += Environment.NewLine + "final: ";
+            for (int i = 0; i < dFAautomata.dfaNodes.Count; i++)
+            {
+                if (dFAautomata.dfaNodes[i].Final)
+                {
+                    temp += dFAautomata.dfaNodes[i].Name + ",";
+                    
+                }
+                
+            }
+            temp += Environment.NewLine + Environment.NewLine + "transitions:" + Environment.NewLine;
+
+            foreach (DFAnode node in dFAautomata.dfaNodes)
+            {
+                foreach (DFAconnection conn in node.Connections)
+                {
+                    temp += node.Name + "," + conn.Symbol + " --> " + conn.ToNode.Name + Environment.NewLine;
+                }
+            }
+            temp += "end." + Environment.NewLine + Environment.NewLine;
+
+            string yOrN;
+            if (automata.dfaTest) yOrN = "y";
+            else yOrN = "n";
+            temp += "dfa: " + yOrN + Environment.NewLine;
+
+            if (automata.finiteTest) yOrN = "y";
+            else yOrN = "n";
+            temp += "finite: " + yOrN + Environment.NewLine + Environment.NewLine;
+
+            temp += "words:" + Environment.NewLine;
+
+            foreach (TestWord word in automata.testWords)
+            {
+                if (word.accapted) yOrN = "y";
+                else yOrN = "n";
+                temp += new string(word.word) + ", " + yOrN + Environment.NewLine;
+                
+            }
+
+            temp += "end.";
+
+            return temp;
         }
     }
 }

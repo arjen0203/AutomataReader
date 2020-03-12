@@ -37,6 +37,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.DFAconvertBox = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.testBox = new System.Windows.Forms.TextBox();
+            this.finiteBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.automataPictureBox)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -62,8 +65,8 @@
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
-            this.pathBox.Text = "C:\\Users\\20182942\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automata input files\\exa" +
-    "mpleautomata.txt";
+            this.pathBox.Text = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automata input files\\exampl" +
+    "eautomata.txt";
             // 
             // label1
             // 
@@ -89,13 +92,14 @@
             // 
             // automataPictureBox
             // 
-            this.automataPictureBox.Location = new System.Drawing.Point(5, 2);
+            this.automataPictureBox.Location = new System.Drawing.Point(-5, 5);
             this.automataPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.automataPictureBox.Name = "automataPictureBox";
-            this.automataPictureBox.Size = new System.Drawing.Size(506, 310);
+            this.automataPictureBox.Size = new System.Drawing.Size(578, 367);
             this.automataPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.automataPictureBox.TabIndex = 4;
             this.automataPictureBox.TabStop = false;
+            this.automataPictureBox.Click += new System.EventHandler(this.automataPictureBox_Click);
             // 
             // tabControl
             // 
@@ -104,7 +108,7 @@
             this.tabControl.Location = new System.Drawing.Point(39, 69);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(524, 340);
+            this.tabControl.Size = new System.Drawing.Size(581, 398);
             this.tabControl.TabIndex = 5;
             // 
             // tabPage1
@@ -113,7 +117,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(516, 314);
+            this.tabPage1.Size = new System.Drawing.Size(573, 372);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Normal";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -124,7 +128,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(516, 314);
+            this.tabPage2.Size = new System.Drawing.Size(573, 372);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Converted";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -134,16 +138,48 @@
             this.DFAconvertBox.Location = new System.Drawing.Point(5, 2);
             this.DFAconvertBox.Margin = new System.Windows.Forms.Padding(2);
             this.DFAconvertBox.Name = "DFAconvertBox";
-            this.DFAconvertBox.Size = new System.Drawing.Size(506, 310);
+            this.DFAconvertBox.Size = new System.Drawing.Size(566, 374);
             this.DFAconvertBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.DFAconvertBox.TabIndex = 5;
             this.DFAconvertBox.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(405, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Tests:";
+            // 
+            // testBox
+            // 
+            this.testBox.Location = new System.Drawing.Point(408, 21);
+            this.testBox.Multiline = true;
+            this.testBox.Name = "testBox";
+            this.testBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.testBox.Size = new System.Drawing.Size(205, 64);
+            this.testBox.TabIndex = 7;
+            // 
+            // finiteBox
+            // 
+            this.finiteBox.AutoSize = true;
+            this.finiteBox.Enabled = false;
+            this.finiteBox.Location = new System.Drawing.Point(90, 46);
+            this.finiteBox.Name = "finiteBox";
+            this.finiteBox.Size = new System.Drawing.Size(51, 17);
+            this.finiteBox.TabIndex = 5;
+            this.finiteBox.Text = "Finite";
+            this.finiteBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 479);
+            this.Controls.Add(this.finiteBox);
+            this.Controls.Add(this.testBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.DFACheckBox);
             this.Controls.Add(this.label1);
@@ -174,6 +210,9 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PictureBox DFAconvertBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox testBox;
+        private System.Windows.Forms.CheckBox finiteBox;
     }
 }
 

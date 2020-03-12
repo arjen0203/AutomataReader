@@ -16,3 +16,16 @@ G,_ --> K
 K,_ --> J
 G,_ --> A
 end.
+
+dfa: y
+finite: y
+
+words:
+ab, y
+ba, y
+aaab, n
+ba, y
+bb, n
+aaaaaaa, y
+aaaaab, n
+end.
