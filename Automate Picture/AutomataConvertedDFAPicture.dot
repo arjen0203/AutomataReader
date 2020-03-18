@@ -1,18 +1,15 @@
 digraph myAutomatonDFA { 
 rankdir=LR; 
 "" [shape=none] 
-"{A}{B}{C}{D}" [shape=circle] 
-"{A}{B}{C}{D}{G}{J}{K}" [shape=doublecircle] 
-"{D}{H}" [shape=circle] 
-"{SINK}" [shape=circle] 
+"{A}{B}{C}{D}{H}{I}" [shape=circle] 
+"{A}{B}{C}{D}{F}{G}{H}{I}" [shape=circle] 
+"{A}{B}{C}{D}{E}{G}{H}{I}" [shape=circle] 
 
-"" -> "{A}{B}{C}{D}" 
-"{A}{B}{C}{D}" -> "{A}{B}{C}{D}{G}{J}{K}" [label="a"] 
-"{A}{B}{C}{D}" -> "{D}{H}" [label="b"] 
-"{A}{B}{C}{D}{G}{J}{K}" -> "{A}{B}{C}{D}{G}{J}{K}" [label="a"] 
-"{A}{B}{C}{D}{G}{J}{K}" -> "{D}{H}" [label="b"] 
-"{D}{H}" -> "{SINK}" [label="a"] 
-"{D}{H}" -> "{D}{H}" [label="b"] 
-"{SINK}" -> "{SINK}" [label="a"] 
-"{SINK}" -> "{SINK}" [label="b"] 
+"" -> "{A}{B}{C}{D}{H}{I}" 
+"{A}{B}{C}{D}{H}{I}" -> "{A}{B}{C}{D}{F}{G}{H}{I}" [label="0"] 
+"{A}{B}{C}{D}{H}{I}" -> "{A}{B}{C}{D}{E}{G}{H}{I}" [label="1"] 
+"{A}{B}{C}{D}{F}{G}{H}{I}" -> "{A}{B}{C}{D}{F}{G}{H}{I}" [label="0"] 
+"{A}{B}{C}{D}{F}{G}{H}{I}" -> "{A}{B}{C}{D}{E}{G}{H}{I}" [label="1"] 
+"{A}{B}{C}{D}{E}{G}{H}{I}" -> "{A}{B}{C}{D}{F}{G}{H}{I}" [label="0"] 
+"{A}{B}{C}{D}{E}{G}{H}{I}" -> "{A}{B}{C}{D}{E}{G}{H}{I}" [label="1"] 
 }

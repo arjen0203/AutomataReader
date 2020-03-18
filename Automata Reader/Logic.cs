@@ -446,7 +446,7 @@ namespace Automata_Reader
                             }
                         }
                     }
-
+                    
                     if (newNode.Contains(sinkNode) && newNode.Count > 1) newNode.Remove(sinkNode);
 
                     foreach (Node node in newNode)
