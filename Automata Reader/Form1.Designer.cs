@@ -43,6 +43,8 @@
             this.testWordButton = new System.Windows.Forms.Button();
             this.testWordBox = new System.Windows.Forms.TextBox();
             this.testWordAcceptanceBox = new System.Windows.Forms.CheckBox();
+            this.isPdaBox = new System.Windows.Forms.CheckBox();
+            this.isNfaBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.automataPictureBox)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -69,7 +71,7 @@
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
             this.pathBox.Text = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automata input files\\exa" +
-    "mpleautomata.txt";
+    "mplePDA.txt";
             // 
             // label1
             // 
@@ -85,7 +87,7 @@
             // 
             this.DFACheckBox.AutoSize = true;
             this.DFACheckBox.Enabled = false;
-            this.DFACheckBox.Location = new System.Drawing.Point(38, 46);
+            this.DFACheckBox.Location = new System.Drawing.Point(646, 14);
             this.DFACheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.DFACheckBox.Name = "DFACheckBox";
             this.DFACheckBox.Size = new System.Drawing.Size(47, 17);
@@ -95,20 +97,19 @@
             // 
             // automataPictureBox
             // 
-            this.automataPictureBox.Location = new System.Drawing.Point(-5, 5);
+            this.automataPictureBox.Location = new System.Drawing.Point(-10, 5);
             this.automataPictureBox.Margin = new System.Windows.Forms.Padding(2);
             this.automataPictureBox.Name = "automataPictureBox";
             this.automataPictureBox.Size = new System.Drawing.Size(578, 367);
             this.automataPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.automataPictureBox.TabIndex = 4;
             this.automataPictureBox.TabStop = false;
-            this.automataPictureBox.Click += new System.EventHandler(this.automataPictureBox_Click);
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Location = new System.Drawing.Point(39, 69);
+            this.tabControl.Location = new System.Drawing.Point(37, 69);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(581, 398);
@@ -168,7 +169,7 @@
             // 
             this.finiteBox.AutoSize = true;
             this.finiteBox.Enabled = false;
-            this.finiteBox.Location = new System.Drawing.Point(90, 46);
+            this.finiteBox.Location = new System.Drawing.Point(719, 14);
             this.finiteBox.Name = "finiteBox";
             this.finiteBox.Size = new System.Drawing.Size(51, 17);
             this.finiteBox.TabIndex = 5;
@@ -202,11 +203,36 @@
             this.testWordAcceptanceBox.Text = "Accepted?";
             this.testWordAcceptanceBox.UseVisualStyleBackColor = true;
             // 
+            // isPdaBox
+            // 
+            this.isPdaBox.AutoSize = true;
+            this.isPdaBox.Enabled = false;
+            this.isPdaBox.Location = new System.Drawing.Point(646, 49);
+            this.isPdaBox.Name = "isPdaBox";
+            this.isPdaBox.Size = new System.Drawing.Size(48, 17);
+            this.isPdaBox.TabIndex = 11;
+            this.isPdaBox.Text = "PDA";
+            this.isPdaBox.UseVisualStyleBackColor = true;
+            // 
+            // isNfaBox
+            // 
+            this.isNfaBox.AutoSize = true;
+            this.isNfaBox.Enabled = false;
+            this.isNfaBox.Location = new System.Drawing.Point(646, 31);
+            this.isNfaBox.Margin = new System.Windows.Forms.Padding(2);
+            this.isNfaBox.Name = "isNfaBox";
+            this.isNfaBox.Size = new System.Drawing.Size(47, 17);
+            this.isNfaBox.TabIndex = 12;
+            this.isNfaBox.Text = "NFA";
+            this.isNfaBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(863, 479);
+            this.Controls.Add(this.isNfaBox);
+            this.Controls.Add(this.isPdaBox);
             this.Controls.Add(this.testWordAcceptanceBox);
             this.Controls.Add(this.testWordBox);
             this.Controls.Add(this.testWordButton);
@@ -249,6 +275,8 @@
         private System.Windows.Forms.Button testWordButton;
         private System.Windows.Forms.TextBox testWordBox;
         private System.Windows.Forms.CheckBox testWordAcceptanceBox;
+        private System.Windows.Forms.CheckBox isPdaBox;
+        private System.Windows.Forms.CheckBox isNfaBox;
     }
 }
 

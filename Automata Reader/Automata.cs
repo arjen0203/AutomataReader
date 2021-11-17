@@ -9,6 +9,7 @@ namespace Automata_Reader
     class Automata
     {
         public List<char> alphabet { get; set; }
+        public List<char> stack { get; set; }
         public List<Node> nodes { get; set; }
         public List<TestWord> testWords { get; set; }
         public bool dfaTest { get; set; }

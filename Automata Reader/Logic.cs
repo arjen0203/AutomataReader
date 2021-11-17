@@ -31,14 +31,18 @@ namespace Automata_Reader
                 else if (text.StartsWith("states:"))
                 {
                     CreateNodes(text);
-                } 
+                }
+                else if (text.StartsWith("stack:"))
+                {
+                    SetStack(text);
+                }
                 else if (text.StartsWith("final:"))
                 {
                     SetFinalNodes(text);
                 }
                 else if (text.StartsWith("transitions:"))
                 {
-                    SetTransitions(reader);
+                    SetTransitions(reader, isPDA());
                 }
                 else if (text.StartsWith("dfa:"))
                 {
@@ -99,30 +103,47 @@ namespace Automata_Reader
             }
         }
 
-        public void SetTransitions(StreamReader reader)
+        public void SetTransitions(StreamReader reader, bool isPDA)
         {
             string text = reader.ReadLine();
 
-            //split for A,a --> B to A & a --> B
-            string[] wichState;
-
-            //split for a --> B to a & B
-            string[] wichConnection;
-
             while (!text.Trim().Equals("end."))
             {
-                wichState = text.Trim().Split(',');
-                wichConnection = wichState[1].Trim().Split(new string[] { "-->" }, StringSplitOptions.None);
+                //split for A,a --> B to A & a --> B
+                string[] commaSplit = text.Trim().Split(new[] { ',' }, 2);
+
+                //split for a --> B to a & B
+                string[] arrowSplit = commaSplit[1].Trim().Split(new string[] { "-->" }, StringSplitOptions.None);
+
+                //split for a [_,_] to to a
+                char charachter = char.Parse(arrowSplit[0].Substring(0, 1));
 
                 foreach (Node node in automata.nodes)
                 {
-                    if (wichState[0].Equals(node.Name))
+                    if (commaSplit[0].Equals(node.Name))
                     {
                         foreach (Node connNode in automata.nodes)
                         {
-                            if (wichConnection[1].Trim().Equals(connNode.Name))
+                            if (arrowSplit[1].Trim().Equals(connNode.Name))
                             {
-                                node.Connections.Add(new Connection(wichConnection[0].Trim().ToCharArray()[0], connNode));
+                                if (this.isPDA())
+                                {
+                                    string[] pushAndPop = arrowSplit[0].Substring(1, arrowSplit[0].Length - 1).Trim().Split(',');
+                                    if (pushAndPop.Length == 2)
+                                    {
+                                        char pushChar = char.Parse(pushAndPop[0].Substring(pushAndPop[0].Length - 1, 1));
+                                        char popChar = char.Parse(pushAndPop[1].Substring(0, 1));
+                                        node.Connections.Add(new Connection(charachter, connNode, pushChar, popChar));
+                                    } else
+                                    {
+                                        node.Connections.Add(new Connection(charachter, connNode));
+                                    }
+
+                                    
+                                } else
+                                {
+                                    node.Connections.Add(new Connection(charachter, connNode));
+                                }
                                 break;
                             }
                         }
@@ -131,6 +152,18 @@ namespace Automata_Reader
                 }
 
                 text = reader.ReadLine();
+            }
+        }
+
+        public void SetStack(string text)
+        {
+            automata.stack = new List<char>();
+
+            string newText = text.Substring(6).Trim();
+
+            foreach (char s in newText)
+            {
+                automata.stack.Add(s);
             }
         }
 
@@ -204,21 +237,12 @@ namespace Automata_Reader
             return finite;
         }
 
-        public string TestOutputString(bool automataIsDFA, bool automataIsFinite)
+        public string TestOutputString(bool automataIsDFA, bool automataIsFinite, bool automataIsPDA)
         {
             string temp = "";
 
-            if (automata.dfaTest == true && automataIsDFA == true) temp += "dfa: y == true" + Environment.NewLine;
-            else if (automata.dfaTest == true && automataIsDFA == false) temp += "dfa: y == false" + Environment.NewLine;
-            else if (automata.dfaTest == false && automataIsDFA == false) temp += "dfa: n == true" + Environment.NewLine;
-            else if (automata.dfaTest == false && automataIsDFA == true) temp += "dfa: n == false" + Environment.NewLine;
-
-            if (automata.finiteTest == true && automataIsFinite == true) temp += "finite: y == true" + Environment.NewLine;
-            else if (automata.finiteTest == true && automataIsFinite == false) temp += "finite: y == false" + Environment.NewLine;
-            else if (automata.finiteTest == false && automataIsFinite == false) temp += "finite: n == true" + Environment.NewLine;
-            else if (automata.finiteTest == false && automataIsFinite == true) temp += "finite: n == false" + Environment.NewLine;
-
-            temp += Environment.NewLine;
+            temp += $"dfa: {(automata.dfaTest ? 'y' : 'n')} == {automata.dfaTest == automataIsDFA}\r\n";
+            temp += $"finite: {(automata.finiteTest ? 'y' : 'n')} == {automata.finiteTest == automataIsFinite}\r\n\r\n";
 
             foreach (TestWord word in automata.testWords)
             {
@@ -230,10 +254,13 @@ namespace Automata_Reader
 
         public string TestWordAccaptence(char[] word, bool testOutcome, bool automataIsDfa)
         {
-            string temp = "";
             bool accepted = false;
 
-            if (automataIsDfa)
+            if (this.isPDA())
+            {
+
+            }
+            else if (automataIsDfa)
             {
                 Node currentNode = automata.nodes[0];
 
@@ -268,13 +295,7 @@ namespace Automata_Reader
                 if (currentNode.Final) accepted = true;
             }
 
-
-            if (accepted == true && testOutcome == true) temp = new string(word) + ",y == true";
-            else if (accepted == false && testOutcome == true) temp = new string(word) + ",y == false";
-            else if (accepted == true && testOutcome == false) temp = new string(word) + ",n == false";
-            else if (accepted == false && testOutcome == false) temp = new string(word) + ",n == true";
-
-            return temp;
+            return $"{new string(word)},{(testOutcome ? 'y' : 'n')} == {accepted == testOutcome}";
         }
 
         public void CreateAutomatePicture()
@@ -319,7 +340,9 @@ namespace Automata_Reader
             {
                 foreach (Connection conn in node.Connections)
                 {
-                    dotString += $"\"{node.Name}\" -> \"{conn.ToNode.Name}\" [label=\"{conn.Symbol}\"] \n";
+                    string label = conn.Symbol.ToString();
+                    if (conn.PopStack != '\0') label = $"{conn.Symbol} [{conn.PushStack},{conn.PopStack}]";
+                    dotString += $"\"{node.Name}\" -> \"{conn.ToNode.Name}\" [label=\"{label}\"] \n";
                 }
             }
 
@@ -671,10 +694,17 @@ namespace Automata_Reader
             return temp;
         }
 
-        public String addTestWord(String word, bool acceptence, bool automataIsDFA)
+        public string addTestWord(string word, bool acceptence, bool automataIsDFA)
         {
+            if (automata == null) return "";
             automata.testWords.Add(new TestWord(word, acceptence));
             return TestWordAccaptence(word.ToCharArray(), acceptence, automataIsDFA) + Environment.NewLine;
+        }
+
+        public bool isPDA()
+        {
+            if (automata.stack != null) return true;
+            return false;
         }
     }
 }

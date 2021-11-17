@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Automata_Reader
@@ -33,18 +26,28 @@ namespace Automata_Reader
             //{
                 Logic.ReadLines(path);
                 Logic.CreateAutomatePicture();
-                DFACheckBox.Checked = Logic.GraphIsDFA();
                 Logic.RunGraphicviz(automataPictureBox);
-
-                if (!DFACheckBox.Checked)
+            
+                if (Logic.isPDA())
                 {
-                    Logic.ConvertNFAtoDFA();
-                    Logic.CreateDFAAutomatePicture();
-                    Logic.RunGraphicvizDFA(DFAconvertBox);
-                    Logic.CreateDFAfile();
+
+                } 
+                else
+                {
+                    DFACheckBox.Checked = Logic.GraphIsDFA();
+                    
+                    if (!DFACheckBox.Checked)
+                    {
+                        Logic.ConvertNFAtoDFA();
+                        Logic.CreateDFAAutomatePicture();
+                        Logic.RunGraphicvizDFA(DFAconvertBox);
+                        Logic.CreateDFAfile();
+                    }
+                    finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
                 }
-                finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
-                testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked);
+
+
+                testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked, isPdaBox.Checked);
 
             //} catch
             //    {
@@ -52,10 +55,6 @@ namespace Automata_Reader
             //    }
         }
 
-        private void automataPictureBox_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void testWordButton_Click(object sender, EventArgs e)
         {
