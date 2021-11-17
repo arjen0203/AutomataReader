@@ -25,3 +25,13 @@ C:\Users\arjen\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\
 C:\Users\arjen\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.GenerateResource.cache
 C:\Users\arjen\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.exe
 C:\Users\arjen\Documents\Fontys\S4 AUT\AutomataReader\Automata Reader\obj\Debug\Automata Reader.pdb
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\bin\Debug\Automata Reader.exe.config
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\bin\Debug\Automata Reader.exe
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\bin\Debug\Automata Reader.pdb
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csprojAssemblyReference.cache
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata_Reader.Form1.resources
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata_Reader.Properties.Resources.resources
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.GenerateResource.cache
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.CoreCompileInputs.cache
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.exe
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.pdb

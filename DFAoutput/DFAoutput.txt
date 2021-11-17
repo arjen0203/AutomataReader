@@ -1,18 +1,27 @@
-alphabet: 01
-states: {A}{B}{C}{D}{H}{I},{A}{B}{C}{D}{F}{G}{H}{I},{A}{B}{C}{D}{E}{G}{H}{I}
-final: 
+alphabet: ab
+states: {A}{B}{C}{D},{A}{B}{C}{D}{G}{J}{K},{D}{H},{SINK}
+final: {A}{B}{C}{D}{G}{J}{K},
 
 transitions:
-{A}{B}{C}{D}{H}{I},0 --> {A}{B}{C}{D}{F}{G}{H}{I}
-{A}{B}{C}{D}{H}{I},1 --> {A}{B}{C}{D}{E}{G}{H}{I}
-{A}{B}{C}{D}{F}{G}{H}{I},0 --> {A}{B}{C}{D}{F}{G}{H}{I}
-{A}{B}{C}{D}{F}{G}{H}{I},1 --> {A}{B}{C}{D}{E}{G}{H}{I}
-{A}{B}{C}{D}{E}{G}{H}{I},0 --> {A}{B}{C}{D}{F}{G}{H}{I}
-{A}{B}{C}{D}{E}{G}{H}{I},1 --> {A}{B}{C}{D}{E}{G}{H}{I}
+{A}{B}{C}{D},a --> {A}{B}{C}{D}{G}{J}{K}
+{A}{B}{C}{D},b --> {D}{H}
+{A}{B}{C}{D}{G}{J}{K},a --> {A}{B}{C}{D}{G}{J}{K}
+{A}{B}{C}{D}{G}{J}{K},b --> {D}{H}
+{D}{H},a --> {SINK}
+{D}{H},b --> {D}{H}
+{SINK},a --> {SINK}
+{SINK},b --> {SINK}
 end.
 
-dfa: n
-finite: n
+dfa: y
+finite: y
 
 words:
+ab, y
+ba, y
+aaab, n
+ba, y
+bb, n
+aaaaaaa, y
+aaaaab, n
 end.

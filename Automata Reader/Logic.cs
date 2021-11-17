@@ -24,56 +24,33 @@ namespace Automata_Reader
             string text = reader.ReadLine();
             while (text != null)
             {
-                if (text.Equals("") || text.StartsWith("#"))
-                {
-                    text = reader.ReadLine();
-                    continue;
-                }
-
                 if (text.StartsWith("alphabet:"))
                 {
                     CreateAlphabet(text);
-                    text = reader.ReadLine();
-                    continue;
-                }
-
-                if (text.StartsWith("states:"))
+                } 
+                else if (text.StartsWith("states:"))
                 {
                     CreateNodes(text);
-                    text = reader.ReadLine();
-                    continue;
-                }
-
-                if (text.StartsWith("final:"))
+                } 
+                else if (text.StartsWith("final:"))
                 {
                     SetFinalNodes(text);
-                    text = reader.ReadLine();
-                    continue;
                 }
-
-                if (text.StartsWith("transitions:"))
+                else if (text.StartsWith("transitions:"))
                 {
                     SetTransitions(reader);
-                    text = reader.ReadLine();
-                    continue;
                 }
-                if (text.StartsWith("dfa:"))
+                else if (text.StartsWith("dfa:"))
                 {
                     SetDFATest(text);
-                    text = reader.ReadLine();
-                    continue;
                 }
-                if (text.StartsWith("finite:"))
+                else if (text.StartsWith("finite:"))
                 {
                     SetFiniteTest(text);
-                    text = reader.ReadLine();
-                    continue;
                 }
-                if (text.StartsWith("words:"))
+                else if (text.StartsWith("words:"))
                 {
                     SetTestWords(reader);
-                    text = reader.ReadLine();
-                    continue;
                 }
 
                 text = reader.ReadLine();
@@ -304,7 +281,7 @@ namespace Automata_Reader
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -357,7 +334,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
+            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataPicture.dot";
 
@@ -365,7 +342,7 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
+            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
         }
 
         public bool GraphIsDFA()
@@ -561,7 +538,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture";
+            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataConvertedDFAPicture.dot";
 
@@ -569,14 +546,14 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
+            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
         }
 
         public void CreateDFAAutomatePicture()
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\Automate Picture\\" + "AutomataConvertedDFAPicture.dot";
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\" + "AutomataConvertedDFAPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -625,8 +602,8 @@ namespace Automata_Reader
         public void CreateDFAfile()
         {
             string pathAndName;
-
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\S4 AUT\\AutomataReader\\DFAoutput\\" + "DFAoutput.txt";
+            
+            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\DFAoutput\\" + "DFAoutput.txt";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -692,6 +669,12 @@ namespace Automata_Reader
             temp += "end.";
 
             return temp;
+        }
+
+        public String addTestWord(String word, bool acceptence, bool automataIsDFA)
+        {
+            automata.testWords.Add(new TestWord(word, acceptence));
+            return TestWordAccaptence(word.ToCharArray(), acceptence, automataIsDFA) + Environment.NewLine;
         }
     }
 }

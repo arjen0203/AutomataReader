@@ -29,8 +29,8 @@ namespace Automata_Reader
         {
 
             string path = pathBox.Text;
-            try
-            {
+            //try
+            //{
                 Logic.ReadLines(path);
                 Logic.CreateAutomatePicture();
                 DFACheckBox.Checked = Logic.GraphIsDFA();
@@ -46,16 +46,20 @@ namespace Automata_Reader
                 finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
                 testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked);
 
-        } catch
-            {
-                MessageBox.Show("Could not create automata");
-            }
-
-}
+            //} catch
+            //    {
+            //        MessageBox.Show("Could not create automata");
+            //    }
+        }
 
         private void automataPictureBox_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void testWordButton_Click(object sender, EventArgs e)
+        {
+            testBox.Text += Logic.addTestWord(testWordBox.Text, testWordAcceptanceBox.Checked, DFACheckBox.Checked);
         }
     }
 }
