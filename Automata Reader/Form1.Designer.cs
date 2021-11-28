@@ -85,8 +85,8 @@
             // 
             // DFACheckBox
             // 
+            this.DFACheckBox.AutoCheck = false;
             this.DFACheckBox.AutoSize = true;
-            this.DFACheckBox.Enabled = false;
             this.DFACheckBox.Location = new System.Drawing.Point(646, 14);
             this.DFACheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.DFACheckBox.Name = "DFACheckBox";
@@ -167,8 +167,8 @@
             // 
             // finiteBox
             // 
+            this.finiteBox.AutoCheck = false;
             this.finiteBox.AutoSize = true;
-            this.finiteBox.Enabled = false;
             this.finiteBox.Location = new System.Drawing.Point(719, 14);
             this.finiteBox.Name = "finiteBox";
             this.finiteBox.Size = new System.Drawing.Size(51, 17);
@@ -205,8 +205,8 @@
             // 
             // isPdaBox
             // 
+            this.isPdaBox.AutoCheck = false;
             this.isPdaBox.AutoSize = true;
-            this.isPdaBox.Enabled = false;
             this.isPdaBox.Location = new System.Drawing.Point(646, 49);
             this.isPdaBox.Name = "isPdaBox";
             this.isPdaBox.Size = new System.Drawing.Size(48, 17);
@@ -216,8 +216,8 @@
             // 
             // isNfaBox
             // 
+            this.isNfaBox.AutoCheck = false;
             this.isNfaBox.AutoSize = true;
-            this.isNfaBox.Enabled = false;
             this.isNfaBox.Location = new System.Drawing.Point(646, 31);
             this.isNfaBox.Margin = new System.Windows.Forms.Padding(2);
             this.isNfaBox.Name = "isNfaBox";

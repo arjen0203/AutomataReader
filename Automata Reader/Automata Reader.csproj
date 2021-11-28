@@ -58,6 +58,7 @@
     <Compile Include="Automata.cs" />
     <Compile Include="DFAnode.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="PDAConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic.cs" />

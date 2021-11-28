@@ -30,7 +30,7 @@ namespace Automata_Reader
             
                 if (Logic.isPDA())
                 {
-
+                    isPdaBox.Checked = true;
                 } 
                 else
                 {

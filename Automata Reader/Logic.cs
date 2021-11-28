@@ -131,8 +131,8 @@ namespace Automata_Reader
                                     string[] pushAndPop = arrowSplit[0].Substring(1, arrowSplit[0].Length - 1).Trim().Split(',');
                                     if (pushAndPop.Length == 2)
                                     {
-                                        char pushChar = char.Parse(pushAndPop[0].Substring(pushAndPop[0].Length - 1, 1));
-                                        char popChar = char.Parse(pushAndPop[1].Substring(0, 1));
+                                        char popChar = char.Parse(pushAndPop[0].Substring(pushAndPop[0].Length - 1, 1));
+                                        char pushChar = char.Parse(pushAndPop[1].Substring(0, 1));
                                         node.Connections.Add(new Connection(charachter, connNode, pushChar, popChar));
                                     } else
                                     {
@@ -258,7 +258,7 @@ namespace Automata_Reader
 
             if (this.isPDA())
             {
-
+                accepted = wordAcceptancePDA(word);
             }
             else if (automataIsDfa)
             {
@@ -296,6 +296,81 @@ namespace Automata_Reader
             }
 
             return $"{new string(word)},{(testOutcome ? 'y' : 'n')} == {accepted == testOutcome}";
+        }
+
+        public bool wordAcceptancePDA(char[] word)
+        {
+            Queue<PDAConfiguration> configurations = new Queue<PDAConfiguration>();
+            configurations.Enqueue(new PDAConfiguration(new Stack<char>(), automata.nodes[0], new Queue<char>(word), 0));
+            HashSet<string> oldConfigs = new HashSet<string>();
+
+            while(configurations.Count != 0)
+            {
+                PDAConfiguration configuration = configurations.Dequeue();
+                if (configuration.Word.Count == 0 & configuration.Stack.Count == 0 && configuration.Node.Final) return true;
+
+                foreach (Connection trans in configuration.Node.Connections)
+                {
+                    PDAConfiguration newConfig = checkTransitionAndCreateNewConfig(configuration, trans);
+                    if (newConfig != null && newConfig.Depth < 50)
+                    {
+                        string newConfigHashString = newConfig.CreateHashString();
+                        if (!oldConfigs.Contains(newConfigHashString))
+                        {
+                            configurations.Enqueue(newConfig);
+                            oldConfigs.Add(newConfigHashString);
+                        }
+                    }
+                }
+                configuration.print();
+            }
+
+            return false;
+        }
+
+        public PDAConfiguration checkStackAndCreateNewConfig(PDAConfiguration currentConfig, Queue<char> newWord, Connection transition)
+        {
+            Stack<char> newStack = new Stack<char>(currentConfig.Stack);
+            Node newNode = transition.ToNode;
+            if (currentConfig.Stack.Count > 0)
+            {
+                if (transition.PopStack == currentConfig.Stack.Peek())
+                {
+                    newStack.Pop();
+                    if (transition.PushStack != '_' && transition.PushStack != '\0') newStack.Push(transition.PushStack);
+                    return new PDAConfiguration(newStack, newNode, newWord, currentConfig.Depth + 1);
+                }
+            }
+
+            if (transition.PopStack == '_')
+            {
+                if (transition.PushStack != '_' && transition.PushStack != '\0') newStack.Push(transition.PushStack);
+                return new PDAConfiguration(newStack, newNode, newWord, currentConfig.Depth + 1);
+            }
+            else if (transition.PopStack == '\0')
+            {
+                return new PDAConfiguration(newStack, newNode, newWord, currentConfig.Depth + 1);
+            }
+            return null;
+        }
+        
+        public PDAConfiguration checkTransitionAndCreateNewConfig(PDAConfiguration currentConfig, Connection transition)
+        {
+            Queue<char> newWord = new Queue<char>(currentConfig.Word);
+            if (currentConfig.Word.Count > 0)
+            {
+                if (transition.Symbol == currentConfig.Word.Peek())
+                {
+                    newWord.Dequeue();
+                    return checkStackAndCreateNewConfig(currentConfig, newWord, transition);
+                }
+            }
+
+            if (transition.Symbol == '_')
+            {
+                return checkStackAndCreateNewConfig(currentConfig, newWord, transition);
+            }
+            return null;
         }
 
         public void CreateAutomatePicture()
@@ -341,7 +416,7 @@ namespace Automata_Reader
                 foreach (Connection conn in node.Connections)
                 {
                     string label = conn.Symbol.ToString();
-                    if (conn.PopStack != '\0') label = $"{conn.Symbol} [{conn.PushStack},{conn.PopStack}]";
+                    if (conn.PopStack != '\0') label = $"{conn.Symbol} [{conn.PopStack},{conn.PushStack}]";
                     dotString += $"\"{node.Name}\" -> \"{conn.ToNode.Name}\" [label=\"{label}\"] \n";
                 }
             }

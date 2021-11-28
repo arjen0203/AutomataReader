@@ -1,0 +1,25 @@
+alphabet: ab
+stack: x
+states: S,B,C
+final: C
+transitions:
+S,a [_,x] --> B
+S,_ [_,_] --> C
+S,b [_,x] --> C
+B,a [_,x] --> S
+C,a [x,_] --> C
+C,b [x,_] --> C
+C,_ [_,_] --> S
+end.
+
+dfa: n
+finite: n
+
+words:
+aabb,y
+bb,y
+bbbb,y
+bbbbbb,y
+aab,n
+aaaab,n
+end.
