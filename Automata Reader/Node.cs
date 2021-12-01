@@ -8,7 +8,7 @@ namespace Automata_Reader
 {
     class Node
     {
-        public bool Starting { get; private set; }
+        public bool Starting { get; set; }
         public bool Final { get; set; }
         public string Name { get; private set; }
         public List<Connection> Connections { get; set; }

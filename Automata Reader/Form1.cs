@@ -60,5 +60,10 @@ namespace Automata_Reader
         {
             testBox.Text += Logic.addTestWord(testWordBox.Text, testWordAcceptanceBox.Checked, DFACheckBox.Checked);
         }
+
+        private void processRegex_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
