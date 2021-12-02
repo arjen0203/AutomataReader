@@ -11,7 +11,7 @@ namespace Automata_Reader
 {
     class Logic
     {
-        public Automata automata { get; private set; }
+        public Automata automata { get; set; }
         public DFAautomata dFAautomata { get; private set; }
         public void ReadLines(string path)
         {

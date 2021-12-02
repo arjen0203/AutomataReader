@@ -6,11 +6,11 @@ namespace Automata_Reader
     public partial class Form1 : Form
     {
         Logic Logic = new Logic();
+        RegexLogic RegexLogic = new RegexLogic();
 
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -34,18 +34,8 @@ namespace Automata_Reader
                 } 
                 else
                 {
-                    DFACheckBox.Checked = Logic.GraphIsDFA();
-                    
-                    if (!DFACheckBox.Checked)
-                    {
-                        Logic.ConvertNFAtoDFA();
-                        Logic.CreateDFAAutomatePicture();
-                        Logic.RunGraphicvizDFA(DFAconvertBox);
-                        Logic.CreateDFAfile();
-                    }
-                    finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
+                    chechAndConvertNFA();
                 }
-
 
                 testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked, isPdaBox.Checked);
 
@@ -63,7 +53,30 @@ namespace Automata_Reader
 
         private void processRegex_Click(object sender, EventArgs e)
         {
-            
+            if (regexBox.Text.Length > 0)
+            {
+                Logic.automata = RegexLogic.processRegex(regexBox.Text);
+                Logic.CreateAutomatePicture();
+                Logic.RunGraphicviz(automataPictureBox);
+
+                chechAndConvertNFA();
+            }
+
+        }
+
+        public void chechAndConvertNFA()
+        {
+            DFACheckBox.Checked = Logic.GraphIsDFA();
+
+            if (!DFACheckBox.Checked)
+            {
+                Logic.ConvertNFAtoDFA();
+                Logic.CreateDFAAutomatePicture();
+                Logic.RunGraphicvizDFA(DFAconvertBox);
+                Logic.CreateDFAfile();
+            }
+
+            finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
         }
     }
 }
