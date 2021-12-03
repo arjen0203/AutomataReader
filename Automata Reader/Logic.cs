@@ -341,8 +341,7 @@ namespace Automata_Reader
 
         public PDAConfiguration checkStackAndCreateNewConfig(PDAConfiguration currentConfig, Queue<char> newWord, Connection transition)
         {
-            Stack<char> reverseStack = new Stack<char>(currentConfig.Stack);
-            Stack<char> newStack = new Stack<char>(reverseStack);
+            Stack<char> newStack = new Stack<char>(new Stack<char>(currentConfig.Stack));
             Node newNode = transition.ToNode;
 
             if (currentConfig.Stack.Count > 0)
