@@ -1,0 +1,28 @@
+alphabet: ab
+stack: AB
+states: q0,q1
+final: q1
+transitions:
+q0,a [_,A] --> q0
+q0,b [_,B] --> q0
+q0,a [_,_] --> q1
+q0,b [_,_] --> q1
+q0,_ [_,_] --> q1
+q1,a [A,_] --> q1
+q1,b [B,_] --> q1
+end.
+
+dfa: n
+fininite: n
+
+words:
+,y
+aa,y
+aaa,y
+aba,y
+bab,y
+baaaab,y
+aab,n
+baba,n
+aabb,n
+end.

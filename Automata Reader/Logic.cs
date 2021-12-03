@@ -13,6 +13,13 @@ namespace Automata_Reader
     {
         public Automata automata { get; set; }
         public DFAautomata dFAautomata { get; private set; }
+
+        public CFGToPDA CFGToPDA { get; private set; }
+
+        public Logic()
+        {
+            CFGToPDA = new CFGToPDA();
+        }
         public void ReadLines(string path)
         {
             FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -55,6 +62,10 @@ namespace Automata_Reader
                 else if (text.StartsWith("words:"))
                 {
                     SetTestWords(reader);
+                }
+                else if (text.StartsWith("grammar:"))
+                {
+                    CFGToPDA.CreatePDAFromCFG(reader);
                 }
 
                 text = reader.ReadLine();
@@ -330,8 +341,10 @@ namespace Automata_Reader
 
         public PDAConfiguration checkStackAndCreateNewConfig(PDAConfiguration currentConfig, Queue<char> newWord, Connection transition)
         {
-            Stack<char> newStack = new Stack<char>(currentConfig.Stack);
+            Stack<char> reverseStack = new Stack<char>(currentConfig.Stack);
+            Stack<char> newStack = new Stack<char>(reverseStack);
             Node newNode = transition.ToNode;
+
             if (currentConfig.Stack.Count > 0)
             {
                 if (transition.PopStack == currentConfig.Stack.Peek())

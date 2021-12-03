@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace Automata_Reader
+{
+    class CFGToPDA
+    {
+        int stateCounter = 1;
+        public Automata CreatePDAFromCFG(StreamReader reader)
+        {
+            List<CFGVariableRule> variableRules = new List<CFGVariableRule>();
+            string rule = reader.ReadLine();
+            stateCounter = 1;
+
+            while (!rule.Trim().Equals("end."))
+            {
+                splitAndSaveTransitions(variableRules, rule);
+                rule = reader.ReadLine();
+            }
+
+            Automata automata = createStartAutomata();
+
+            return null;
+        }
+
+        private void splitAndSaveTransitions(List<CFGVariableRule> variableRules, string rule)
+        {
+            rule = Regex.Replace(rule, @"\s+", "");
+            string[] splitup = rule.Split(':');
+
+            for (int i = 0; i < variableRules.Count; i++)
+            {
+                if (variableRules[i].Variable == splitup[0][0])
+                {
+                    variableRules[i].TerminalTransition.Add(splitup[1]);
+                    return;
+                }
+            }
+
+            variableRules.Add(new CFGVariableRule(splitup[0][0], splitup[1]));
+        }
+
+        private Automata createStartAutomata()
+        {
+            Automata automata = new Automata();
+            Node startNode = new Node(true, stateCounter++.ToString());
+            Node dollarNode = new Node(false, stateCounter++.ToString());
+            Node mainCFGNode = new Node(false, stateCounter++.ToString());
+            Node endNode = new Node(false, stateCounter++.ToString());
+
+            startNode.Connections.Add(new Connection('_', dollarNode, '$', '_'));
+            dollarNode.Connections.Add(new Connection('_', mainCFGNode, 'S', '_'));
+            mainCFGNode.Connections.Add(new Connection('_', endNode, '_', '$'));
+
+            return automata;
+        }
+    }
+}

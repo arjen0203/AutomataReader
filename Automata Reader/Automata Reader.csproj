@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CFGVariableRule.cs" />
+    <Compile Include="CFGToPDA.cs" />
     <Compile Include="DFAconnection.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DFAautomata.cs" />

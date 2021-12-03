@@ -74,7 +74,7 @@
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
             this.pathBox.Text = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automata input files\\exa" +
-    "mplePDA.txt";
+    "mpleCFG.txt";
             // 
             // label1
             // 
