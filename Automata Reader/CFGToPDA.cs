@@ -25,7 +25,9 @@ namespace Automata_Reader
 
             Automata automata = createStartAutomata();
 
-            return null;
+            addCFGTransitions(automata, variableRules);
+
+            return automata;
         }
 
         private void splitAndSaveTransitions(List<CFGVariableRule> variableRules, string rule)
@@ -37,7 +39,7 @@ namespace Automata_Reader
             {
                 if (variableRules[i].Variable == splitup[0][0])
                 {
-                    variableRules[i].TerminalTransition.Add(splitup[1]);
+                    variableRules[i].TerminalTransitions.Add(splitup[1]);
                     return;
                 }
             }
@@ -48,16 +50,65 @@ namespace Automata_Reader
         private Automata createStartAutomata()
         {
             Automata automata = new Automata();
-            Node startNode = new Node(true, stateCounter++.ToString());
-            Node dollarNode = new Node(false, stateCounter++.ToString());
-            Node mainCFGNode = new Node(false, stateCounter++.ToString());
-            Node endNode = new Node(false, stateCounter++.ToString());
+            Node startNode = new Node(true, "Qstart");
+            Node dollarNode = new Node(false, "Qdollar");
+            Node mainCFGNode = new Node(false, "Qloop");
+            Node endNode = new Node(false, "Qend", true);
 
             startNode.Connections.Add(new Connection('_', dollarNode, '$', '_'));
             dollarNode.Connections.Add(new Connection('_', mainCFGNode, 'S', '_'));
             mainCFGNode.Connections.Add(new Connection('_', endNode, '_', '$'));
 
+            automata.stack = new List<char>();
+            addStackSymbol('$', automata);
+            addStackSymbol('S', automata);
+
+            automata.nodes.Add(startNode);
+            automata.nodes.Add(dollarNode);
+            automata.nodes.Add(mainCFGNode);
+            automata.nodes.Add(endNode);
+
             return automata;
+        }
+
+        public void addCFGTransitions(Automata automata, List<CFGVariableRule> rules)
+        {
+            foreach (CFGVariableRule variableRule in rules)
+            {
+                addStackSymbol(variableRule.Variable, automata);
+                foreach (string terminals in variableRule.TerminalTransitions)
+                {
+                    Node currentNode = automata.nodes[2];
+                    for (int i = terminals.Length - 1; i > -1; i--)
+                    {
+                        Node connectionNode;
+                        if (0 == i) connectionNode = automata.nodes[2];
+                        else
+                        {
+                            connectionNode = new Node(false, stateCounter++.ToString());
+                            automata.nodes.Add(connectionNode);
+                        }
+                        currentNode.Connections.Add(new Connection('_', connectionNode, terminals[i], (i == terminals.Length - 1 ? variableRule.Variable : '_')));
+                        addStackSymbol(terminals[i], automata);
+                        addAlphabetSymbol(terminals[i], automata);
+                        currentNode = connectionNode;
+                    }
+                }
+            }
+
+            foreach (char symbol in automata.alphabet)
+            {
+                automata.nodes[2].Connections.Add(new Connection(symbol, automata.nodes[2], '_', symbol));
+            }
+        }
+
+        public void addStackSymbol(char symbol, Automata automata)
+        {
+            if (!automata.stack.Contains(symbol) && symbol != '_') automata.stack.Add(symbol);
+        }
+        public void addAlphabetSymbol(char symbol, Automata automata)
+        {
+            if (char.IsLower(symbol) && !automata.alphabet.Contains(symbol)) automata.alphabet.Add(symbol);
         }
     }
 }

@@ -1,22 +1,17 @@
-alphabet: ab
-states: {1}{10}{5}{6}{7}{9},{2},{10}{8},{SINK},{1}{10}{4}{6}
-final: {1}{10}{5}{6}{7}{9},{10}{8},{1}{10}{4}{6},
+alphabet: 
+states: {1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart}
+final: {1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart},
 
 transitions:
-{1}{10}{5}{6}{7}{9},a --> {2}
-{1}{10}{5}{6}{7}{9},b --> {10}{8}
-{2},a --> {SINK}
-{2},b --> {1}{10}{4}{6}
-{10}{8},a --> {SINK}
-{10}{8},b --> {SINK}
-{SINK},a --> {SINK}
-{SINK},b --> {SINK}
-{1}{10}{4}{6},a --> {2}
-{1}{10}{4}{6},b --> {SINK}
 end.
 
 dfa: n
 finite: n
 
 words:
+, n
+aa, n
+abbcc, y
+u, n
+uwwww, y
 end.

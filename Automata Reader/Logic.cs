@@ -65,7 +65,7 @@ namespace Automata_Reader
                 }
                 else if (text.StartsWith("grammar:"))
                 {
-                    CFGToPDA.CreatePDAFromCFG(reader);
+                    automata = CFGToPDA.CreatePDAFromCFG(reader);
                 }
 
                 text = reader.ReadLine();

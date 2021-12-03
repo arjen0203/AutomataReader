@@ -20,5 +20,13 @@ namespace Automata_Reader
             this.Name = name;
             this.Connections = new List<Connection>();
         }
+
+        public Node(bool starting, string name, bool final)
+        {
+            this.Starting = starting;
+            this.Final = final;
+            this.Name = name;
+            this.Connections = new List<Connection>();
+        }
     }
 }
