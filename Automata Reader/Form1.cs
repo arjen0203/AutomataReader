@@ -91,7 +91,7 @@ namespace Automata_Reader
             Logic.ConvertPDAToCFG();
         }
 
-        private void OpenCFGFolder_Click(object sender, EventArgs e)
+        private void OpenCFGFile_Click(object sender, EventArgs e)
         {
             Process.Start("notepad.exe", $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\CFGoutput\\CFGoutput.txt");
         }

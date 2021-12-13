@@ -49,7 +49,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.processRegex = new System.Windows.Forms.Button();
             this.ConvertPDA = new System.Windows.Forms.Button();
-            this.OpenCFGFolder = new System.Windows.Forms.Button();
+            this.OpenCFGFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.automataPictureBox)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,7 +75,7 @@
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
-            this.pathBox.Text = "examplePDA";
+            this.pathBox.Text = "examplePDAToCFG";
             // 
             // label1
             // 
@@ -268,22 +268,22 @@
             this.ConvertPDA.UseVisualStyleBackColor = true;
             this.ConvertPDA.Click += new System.EventHandler(this.ConvertPDA_Click);
             // 
-            // OpenCFGFolder
+            // OpenCFGFile
             // 
-            this.OpenCFGFolder.Location = new System.Drawing.Point(937, 58);
-            this.OpenCFGFolder.Name = "OpenCFGFolder";
-            this.OpenCFGFolder.Size = new System.Drawing.Size(112, 23);
-            this.OpenCFGFolder.TabIndex = 17;
-            this.OpenCFGFolder.Text = "Open CFG folder";
-            this.OpenCFGFolder.UseVisualStyleBackColor = true;
-            this.OpenCFGFolder.Click += new System.EventHandler(this.OpenCFGFolder_Click);
+            this.OpenCFGFile.Location = new System.Drawing.Point(937, 58);
+            this.OpenCFGFile.Name = "OpenCFGFile";
+            this.OpenCFGFile.Size = new System.Drawing.Size(112, 23);
+            this.OpenCFGFile.TabIndex = 17;
+            this.OpenCFGFile.Text = "Open CFG";
+            this.OpenCFGFile.UseVisualStyleBackColor = true;
+            this.OpenCFGFile.Click += new System.EventHandler(this.OpenCFGFile_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1086, 708);
-            this.Controls.Add(this.OpenCFGFolder);
+            this.Controls.Add(this.OpenCFGFile);
             this.Controls.Add(this.ConvertPDA);
             this.Controls.Add(this.processRegex);
             this.Controls.Add(this.label3);
@@ -338,7 +338,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button processRegex;
         private System.Windows.Forms.Button ConvertPDA;
-        private System.Windows.Forms.Button OpenCFGFolder;
+        private System.Windows.Forms.Button OpenCFGFile;
     }
 }
 

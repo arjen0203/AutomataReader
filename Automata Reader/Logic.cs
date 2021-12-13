@@ -28,7 +28,7 @@ namespace Automata_Reader
             try
             {
                 fileStream = new FileStream($"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automata input files\\{path}.txt", FileMode.Open, FileAccess.Read);
-            } catch (Exception x)
+            } catch (Exception)
             {
                 Console.WriteLine("ERROR: File not found");
                 return;
@@ -399,9 +399,7 @@ namespace Automata_Reader
 
         public void CreateAutomatePicture()
         {
-            string pathAndName;
-            
-            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataPicture.dot";
+            string pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -673,9 +671,7 @@ namespace Automata_Reader
 
         public void CreateDFAAutomatePicture()
         {
-            string pathAndName;
-
-            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataConvertedDFAPicture.dot";
+            string pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataConvertedDFAPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -723,9 +719,7 @@ namespace Automata_Reader
         }
         public void CreateDFAfile()
         {
-            string pathAndName;
-
-            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\DFAoutput\\DFAoutput.txt";
+            string pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\DFAoutput\\DFAoutput.txt";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -809,6 +803,17 @@ namespace Automata_Reader
         public void ConvertPDAToCFG()
         {
             string outputString = PDAToCFG.ConvertPDAToCFGToString(automata);
+
+            string pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\CFGoutput\\CFGoutput.txt";
+
+            FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
+
+            StreamWriter writer = new StreamWriter(fileStream);
+
+            writer.WriteLine(outputString);
+
+            writer.Close();
+            fileStream.Close();
         }
     }
 }

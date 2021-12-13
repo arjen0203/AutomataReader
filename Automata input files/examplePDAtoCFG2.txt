@@ -1,12 +1,15 @@
 alphabet: abc
 stack: xyz
-states: S,C,D,F,G
+states: S,B,C,D,E,F,G
 final: G
 transitions:
 S,_ [_,z] --> F
 F,a [_,x] --> F
 F,_ [_,y] --> D
-D,_ [y,_] --> C
+D,_ [y,_] --> B
+B,b [_,x] --> B
+B,_ [_,y] --> E
+E,_ [y,_] --> C
 C,c [x,_] --> C
 C,_ [z,_] --> G
 end.
@@ -16,9 +19,11 @@ finite: n
 
 words:
 ,y
-ac,y
+abcc,y
 aacc,y
-aaaccc,y
-aacccc,n
-aaaacc,n
+bbbccc,y
+aaabbcccc,n
+aabbccccc,n
+bbaccc,n
+aaaabbbacccccccc,n
 end.

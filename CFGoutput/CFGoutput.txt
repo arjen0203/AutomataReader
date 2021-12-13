@@ -1,31 +1,8 @@
-SS : _ 
-SS : SS SS 
-SS : SB BS 
-SS : SC CS 
-SB : SS SB 
-SB : SB BB 
-SB : SC CB 
-BS : BS SS 
-BS : BB BS 
-BS : BC CS 
-SC : SS SC 
-SC : SB BC 
-SC : SC CC 
-CS : CS SS 
-CS : CB BS 
-CS : CC CS 
-BB : _ 
-BB : BS SB 
-BB : BB BB 
-BB : BC CB 
-CB : CS SB 
-CB : CB BB 
-CB : CC CB 
-BC : BS SC 
-BC : BB BC 
-BC : BC CC 
-CC : _ 
-CC : CS SC 
-CC : CB BC 
-CC : CC CC 
+SG : _ FC _ 
+FC : a FC c 
+FC : _ DE _ 
+BB : _ ED _ 
+BC : b BC c 
+BC : _ EE _ 
+FB : _ DD _ 
 

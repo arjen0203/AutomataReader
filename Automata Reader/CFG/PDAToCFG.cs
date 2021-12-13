@@ -28,17 +28,39 @@ namespace Automata_Reader
                     ConvertTransition transition = GetOrCreateNewTransition(fromNode, toNode, allTransitions);
 
                     //type 1 transitions
-                    if (fromNode == toNode) transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { new ConvertLetter('_')});
-                        
+                    if (fromNode == toNode) transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { new ConvertLetter('_') });
+
                     //type 2 transitions
-                    foreach(Node betweenNode in automata.nodes)
+                    foreach (Node betweenNode in automata.nodes)
                     {
-                        transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { 
-                            GetOrCreateNewTransition(fromNode, betweenNode, allTransitions), 
-                            GetOrCreateNewTransition(betweenNode, toNode, allTransitions) 
+                        transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() {
+                            GetOrCreateNewTransition(fromNode, betweenNode, allTransitions),
+                            GetOrCreateNewTransition(betweenNode, toNode, allTransitions)
                         });
                     }
-                    
+
+                }
+                //type 3 transitions
+                foreach (Connection conn in fromNode.Connections)
+                {
+                    if (conn.PushStack != '_')
+                    {
+                        foreach (Node secondConnNode in automata.nodes)
+                        {
+                            foreach (Connection secondConn in secondConnNode.Connections)
+                            {
+                                if (secondConn.PopStack == conn.PushStack)
+                                {
+                                    ConvertTransition type3Transition = GetOrCreateNewTransition(fromNode, secondConn.ToNode, allTransitions);
+                                    type3Transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() {
+                                        new ConvertLetter(conn.Symbol),
+                                        GetOrCreateNewTransition(conn.ToNode, secondConnNode, allTransitions),
+                                        new ConvertLetter(secondConn.Symbol)
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
