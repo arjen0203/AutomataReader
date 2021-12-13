@@ -1,0 +1,13 @@
+grammar:  
+S:S
+S:b
+end. 
+ 
+dfa: n 
+finite: n 
+ 
+words:
+b,y
+bb,n
+,n
+end.

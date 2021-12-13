@@ -48,6 +48,8 @@
             this.regexBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.processRegex = new System.Windows.Forms.Button();
+            this.ConvertPDA = new System.Windows.Forms.Button();
+            this.OpenCFGFolder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.automataPictureBox)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -73,8 +75,7 @@
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
-            this.pathBox.Text = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automata input files\\exa" +
-    "mpleCFG.txt";
+            this.pathBox.Text = "examplePDA";
             // 
             // label1
             // 
@@ -172,7 +173,7 @@
             // 
             this.finiteBox.AutoCheck = false;
             this.finiteBox.AutoSize = true;
-            this.finiteBox.Location = new System.Drawing.Point(942, 131);
+            this.finiteBox.Location = new System.Drawing.Point(1022, 131);
             this.finiteBox.Name = "finiteBox";
             this.finiteBox.Size = new System.Drawing.Size(51, 17);
             this.finiteBox.TabIndex = 5;
@@ -210,7 +211,7 @@
             // 
             this.isPdaBox.AutoCheck = false;
             this.isPdaBox.AutoSize = true;
-            this.isPdaBox.Location = new System.Drawing.Point(869, 174);
+            this.isPdaBox.Location = new System.Drawing.Point(868, 32);
             this.isPdaBox.Name = "isPdaBox";
             this.isPdaBox.Size = new System.Drawing.Size(48, 17);
             this.isPdaBox.TabIndex = 11;
@@ -221,7 +222,7 @@
             // 
             this.isNfaBox.AutoCheck = false;
             this.isNfaBox.AutoSize = true;
-            this.isNfaBox.Location = new System.Drawing.Point(869, 152);
+            this.isNfaBox.Location = new System.Drawing.Point(946, 131);
             this.isNfaBox.Margin = new System.Windows.Forms.Padding(2);
             this.isNfaBox.Name = "isNfaBox";
             this.isNfaBox.Size = new System.Drawing.Size(47, 17);
@@ -256,11 +257,34 @@
             this.processRegex.UseVisualStyleBackColor = true;
             this.processRegex.Click += new System.EventHandler(this.processRegex_Click);
             // 
+            // ConvertPDA
+            // 
+            this.ConvertPDA.Enabled = false;
+            this.ConvertPDA.Location = new System.Drawing.Point(937, 28);
+            this.ConvertPDA.Name = "ConvertPDA";
+            this.ConvertPDA.Size = new System.Drawing.Size(112, 23);
+            this.ConvertPDA.TabIndex = 16;
+            this.ConvertPDA.Text = "Convert to CFG";
+            this.ConvertPDA.UseVisualStyleBackColor = true;
+            this.ConvertPDA.Click += new System.EventHandler(this.ConvertPDA_Click);
+            // 
+            // OpenCFGFolder
+            // 
+            this.OpenCFGFolder.Location = new System.Drawing.Point(937, 58);
+            this.OpenCFGFolder.Name = "OpenCFGFolder";
+            this.OpenCFGFolder.Size = new System.Drawing.Size(112, 23);
+            this.OpenCFGFolder.TabIndex = 17;
+            this.OpenCFGFolder.Text = "Open CFG folder";
+            this.OpenCFGFolder.UseVisualStyleBackColor = true;
+            this.OpenCFGFolder.Click += new System.EventHandler(this.OpenCFGFolder_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1086, 708);
+            this.Controls.Add(this.OpenCFGFolder);
+            this.Controls.Add(this.ConvertPDA);
             this.Controls.Add(this.processRegex);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.regexBox);
@@ -313,6 +337,8 @@
         private System.Windows.Forms.TextBox regexBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button processRegex;
+        private System.Windows.Forms.Button ConvertPDA;
+        private System.Windows.Forms.Button OpenCFGFolder;
     }
 }
 

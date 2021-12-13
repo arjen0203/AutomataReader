@@ -1,17 +1,21 @@
-alphabet: 
-states: {1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart}
-final: {1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart},
+alphabet: ab
+states: {B}{Z},{A}{B},{B}
+final: {B}{Z},{A}{B},{B},
 
 transitions:
+{B}{Z},a --> {A}{B}
+{B}{Z},b --> {B}
+{A}{B},a --> {A}{B}
+{A}{B},b --> {B}
+{B},a --> {B}
+{B},b --> {B}
 end.
 
 dfa: n
 finite: n
 
 words:
-, n
-aa, n
-abbcc, y
-u, n
-uwwww, y
+bbbbbbbbbb, y
+a, y
+ab, n
 end.

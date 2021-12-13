@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Automata_Reader
@@ -25,17 +27,22 @@ namespace Automata_Reader
             //try
             //{
                 Logic.ReadLines(path);
+                if (Logic.automata == null) return;
+
                 Logic.CreateAutomatePicture();
                 Logic.RunGraphicviz(automataPictureBox);
             
                 if (Logic.isPDA())
                 {
                     isPdaBox.Checked = true;
+                    ConvertPDA.Enabled = true;
                 } 
                 else
                 {
                     chechAndConvertNFA();
-                }
+                isPdaBox.Checked = false;
+                ConvertPDA.Enabled = false;
+            }
 
                 testBox.Text = Logic.TestOutputString(DFACheckBox.Checked, finiteBox.Checked, isPdaBox.Checked);
 
@@ -77,6 +84,16 @@ namespace Automata_Reader
             }
 
             finiteBox.Checked = Logic.IsFinite(DFACheckBox.Checked);
+        }
+
+        private void ConvertPDA_Click(object sender, EventArgs e)
+        {
+            Logic.ConvertPDAToCFG();
+        }
+
+        private void OpenCFGFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\CFGoutput\\CFGoutput.txt");
         }
     }
 }

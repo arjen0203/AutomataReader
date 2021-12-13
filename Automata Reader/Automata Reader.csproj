@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CFGVariableRule.cs" />
-    <Compile Include="CFGToPDA.cs" />
+    <Compile Include="CFG\Transitions\ConvertLetter.cs" />
+    <Compile Include="CFG\Transitions\ConvertTransition.cs" />
+    <Compile Include="CFG\CFGVariableRule.cs" />
+    <Compile Include="CFG\CFGToPDA.cs" />
+    <Compile Include="CFG\Transitions\IConvertLetterOrTransition.cs" />
     <Compile Include="DFAconnection.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DFAautomata.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="DFAnode.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="PDAConfiguration.cs" />
+    <Compile Include="CFG\PDAToCFG.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic.cs" />

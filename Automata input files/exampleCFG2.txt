@@ -1,0 +1,38 @@
+grammar:  
+S:E
+H:_
+R:b
+C:F
+D:G
+E:H
+J:Q
+K:R
+L:T
+C:a J C
+C:a K F
+C:a L M
+D:a J D
+D:a K G
+D:a L N
+E:a J E
+E:a K H
+E:a L P
+J:a J J
+J:a K Q
+J:a L U
+K:a J K
+K:a K R
+K:a L V
+L:a J L
+L:a K T
+L:a L W
+end. 
+ 
+dfa: n 
+finite: n 
+ 
+words:
+ab,y
+aabb,y
+abb,n
+end.

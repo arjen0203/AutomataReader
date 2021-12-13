@@ -15,14 +15,25 @@ namespace Automata_Reader
         public DFAautomata dFAautomata { get; private set; }
 
         public CFGToPDA CFGToPDA { get; private set; }
+        public PDAToCFG PDAToCFG { get; private set; }
 
         public Logic()
         {
-            CFGToPDA = new CFGToPDA();
+            this.CFGToPDA = new CFGToPDA();
+            this.PDAToCFG = new PDAToCFG();
         }
         public void ReadLines(string path)
         {
-            FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            FileStream fileStream;
+            try
+            {
+                fileStream = new FileStream($"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automata input files\\{path}.txt", FileMode.Open, FileAccess.Read);
+            } catch (Exception x)
+            {
+                Console.WriteLine("ERROR: File not found");
+                return;
+            }
+            
 
             StreamReader reader = new StreamReader(fileStream);
 
@@ -333,6 +344,7 @@ namespace Automata_Reader
                         }
                     }
                 }
+                //outcomment this for big performence increase
                 configuration.print();
             }
 
@@ -388,8 +400,8 @@ namespace Automata_Reader
         public void CreateAutomatePicture()
         {
             string pathAndName;
-
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\" + "AutomataPicture.dot";
+            
+            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -443,8 +455,8 @@ namespace Automata_Reader
             Process dot = new Process();
 
             dot.StartInfo.FileName = "dot.exe";
-
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture";
+            
+            dot.StartInfo.WorkingDirectory = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataPicture.dot";
 
@@ -452,7 +464,7 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\AutomataPicture.dot.png";
+            pictureBox.ImageLocation = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataPicture.dot.png";
         }
 
         public bool GraphIsDFA()
@@ -648,7 +660,7 @@ namespace Automata_Reader
 
             dot.StartInfo.FileName = "dot.exe";
 
-            dot.StartInfo.WorkingDirectory = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\";
+            dot.StartInfo.WorkingDirectory = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture";
 
             dot.StartInfo.Arguments = "-Tpng -O AutomataConvertedDFAPicture.dot";
 
@@ -656,14 +668,14 @@ namespace Automata_Reader
 
             dot.WaitForExit();
 
-            pictureBox.ImageLocation = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
+            pictureBox.ImageLocation = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataConvertedDFAPicture.dot.png";
         }
 
         public void CreateDFAAutomatePicture()
         {
             string pathAndName;
 
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\Automate Picture\\" + "AutomataConvertedDFAPicture.dot";
+            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataConvertedDFAPicture.dot";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -712,8 +724,8 @@ namespace Automata_Reader
         public void CreateDFAfile()
         {
             string pathAndName;
-            
-            pathAndName = "C:\\Users\\arjen\\Documents\\Fontys\\GitKraken\\AutomataReader\\DFAoutput\\" + "DFAoutput.txt";
+
+            pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\DFAoutput\\DFAoutput.txt";
 
             FileStream fileStream = new FileStream(pathAndName, FileMode.Create, FileAccess.Write);
 
@@ -792,6 +804,11 @@ namespace Automata_Reader
         {
             if (automata.stack != null) return true;
             return false;
+        }
+
+        public void ConvertPDAToCFG()
+        {
+            string outputString = PDAToCFG.ConvertPDAToCFGToString(automata);
         }
     }
 }

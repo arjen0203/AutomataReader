@@ -1,7 +1,15 @@
 digraph myAutomatonDFA { 
 rankdir=LR; 
 "" [shape=none] 
-"{1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart}" [shape=doublecircle] 
+"{B}{Z}" [shape=doublecircle] 
+"{A}{B}" [shape=doublecircle] 
+"{B}" [shape=doublecircle] 
 
-"" -> "{1}{2}{3}{4}{5}{6}{Qdollar}{Qend}{Qloop}{Qstart}" 
+"" -> "{B}{Z}" 
+"{B}{Z}" -> "{A}{B}" [label="a"] 
+"{B}{Z}" -> "{B}" [label="b"] 
+"{A}{B}" -> "{A}{B}" [label="a"] 
+"{A}{B}" -> "{B}" [label="b"] 
+"{B}" -> "{B}" [label="a"] 
+"{B}" -> "{B}" [label="b"] 
 }
