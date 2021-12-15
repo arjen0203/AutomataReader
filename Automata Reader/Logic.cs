@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Automata_Reader.CFG_Code;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;

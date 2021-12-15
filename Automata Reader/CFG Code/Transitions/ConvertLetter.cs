@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automata_Reader.CFG
+namespace Automata_Reader.CFG_Code.Transitions
 {
     class ConvertLetter : IConvertLetterOrTransition
     {

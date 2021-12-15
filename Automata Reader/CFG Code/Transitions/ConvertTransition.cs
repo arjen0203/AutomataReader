@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automata_Reader.CFG.Transitions
+namespace Automata_Reader.CFG_Code.Transitions
 {
     class ConvertTransition : IConvertLetterOrTransition
     {
@@ -24,6 +24,33 @@ namespace Automata_Reader.CFG.Transitions
         {
             return true;
         }
+
+        public List<ConvertTransition> ReturnAllTransitionVariables()
+        {
+            List<ConvertTransition> AllVariables = new List<ConvertTransition>();
+            foreach (List<IConvertLetterOrTransition> outputList in ToVariablesOrLetters)
+            {
+                foreach (IConvertLetterOrTransition letterOrTrans in outputList)
+                {
+                    if (letterOrTrans.IsVariable()) AllVariables.Add((ConvertTransition)letterOrTrans);
+                }
+            }
+            return AllVariables;
+        }
+
+        public bool ContainsTerminals()
+        {
+            foreach (List<IConvertLetterOrTransition> outputList in ToVariablesOrLetters)
+            {
+                foreach (IConvertLetterOrTransition letterOrTrans in outputList)
+                {
+                    if (!letterOrTrans.IsVariable()) return true;
+                }
+            }
+            return false;
+        }
+
+
 
         public string ReturnString()
         {

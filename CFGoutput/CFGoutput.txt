@@ -1,8 +1,5 @@
-SG : _ FC _ 
-FC : a FC c 
-FC : _ DE _ 
-BB : _ ED _ 
-BC : b BC c 
-BC : _ EE _ 
-FB : _ DD _ 
+SS : AA CC 
+AA : a 
+CC : c 
+EE : a AA 
 
