@@ -10,12 +10,16 @@ namespace Automata_Reader.CFG_Code.Transitions
     {
         public Dictionary<char, ConvertLetter> Terminals { get; private set; }
         public Dictionary<string, ConvertTransition> AllTransitions { get; private set; }
+        public ConvertTransition StartVariable { get; private set; }
 
-        public CFG()
+        public CFG(Node startLeftNode, Node startRightNode)
         {
             this.Terminals = new Dictionary<char, ConvertLetter>();
             Terminals.Add('_', new ConvertLetter('_'));
             this.AllTransitions = new Dictionary<string, ConvertTransition>();
+            ConvertTransition startVariable = new ConvertTransition(startLeftNode, startRightNode);
+            AllTransitions.Add($"{startLeftNode.Name}{startRightNode.Name}", startVariable);
+            this.StartVariable = startVariable;
         }
 
         public void PruneNotIncludedVariables(HashSet<ConvertTransition> variables)

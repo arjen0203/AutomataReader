@@ -1,5 +1,8 @@
-SS : AA CC 
-AA : a 
-CC : c 
-EE : a AA 
+SF : SA AF 
+SF : a b 
+SA : SF FA 
+AS : AF FS 
+FS : FA AS 
+FA : FS SA 
+AF : AS SF 
 
