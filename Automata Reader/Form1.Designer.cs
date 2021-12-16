@@ -75,7 +75,7 @@
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
-            this.pathBox.Text = "examplePDAToCFG";
+            this.pathBox.Text = "tinyPDAToCFG";
             // 
             // label1
             // 

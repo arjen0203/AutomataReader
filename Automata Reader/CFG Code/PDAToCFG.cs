@@ -74,11 +74,11 @@ namespace Automata_Reader.CFG_Code
             while (changesCount > 0)
             {
                 changesCount = 0;
-                if (CFGReduction(cfg)) changesCount++;
-                if (SubstituteEmptyTransitions(cfg)) changesCount++;
-                RemoveUnneededEpsilon(cfg);
+                //RemoveUnneededEpsilon(cfg);
+                //if (CFGReduction(cfg)) changesCount++;
+/*              if (SubstituteEmptyTransitions(cfg)) changesCount++;
                 RemoveSelfPointingTrans(cfg);
-                RemoveDoubles(cfg);
+                RemoveDoubles(cfg);*/
                 //changesCount = 0;
             }
         }
@@ -221,16 +221,19 @@ namespace Automata_Reader.CFG_Code
             {
                 foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
                 {
-                    for (int i = 0; i < transition.Count; i++)
+                    if (TransitionContainsOnlyVariables(transition))
                     {
-                        if (transition[i].IsVariable() && !transition[i].ToString().Equals(valuePair.Value.ToString()))
+                        for (int i = 0; i < transition.Count; i++)
                         {
-                            foreach (List<IConvertLetterOrTransition> trans2 in ((ConvertTransition)transition[i]).ToVariablesOrLetters)
+                            if (transition[i].IsVariable() /*&& !transition[i].ToString().Equals(valuePair.Value.ToString())*/)
                             {
-                                if (trans2.Count == 1 && trans2[0].ToString().Equals("_"))
+                                foreach (List<IConvertLetterOrTransition> trans2 in ((ConvertTransition)transition[i]).ToVariablesOrLetters)
                                 {
-                                    transition[i] = GetOrCreateNewSymbol('_', cfg);
-                                    changes = true;
+                                    if (trans2.Count == 1 && trans2[0].ToString().Equals("_"))
+                                    {
+                                        transition[i] = GetOrCreateNewSymbol('_', cfg);
+                                        changes = true;
+                                    }
                                 }
                             }
                         }

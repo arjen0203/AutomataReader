@@ -1,8 +1,32 @@
+SF : SS SF 
 SF : SA AF 
-SF : a b 
+SF : SF FF 
+SF : a AA b 
+SS : _ 
+SS : SS SS 
+SS : SA AS 
+SS : SF FS 
+SA : SS SA 
+SA : SA AA 
 SA : SF FA 
+AS : AS SS 
+AS : AA AS 
 AS : AF FS 
+FS : FS SS 
 FS : FA AS 
+FS : FF FS 
+AA : _ 
+AA : AS SA 
+AA : AA AA 
+AA : AF FA 
 FA : FS SA 
+FA : FA AA 
+FA : FF FA 
 AF : AS SF 
+AF : AA AF 
+AF : AF FF 
+FF : _ 
+FF : FS SF 
+FF : FA AF 
+FF : FF FF 
 

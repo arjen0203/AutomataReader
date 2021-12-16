@@ -1,0 +1,18 @@
+alphabet: a
+stack: $SA
+states: S,A,B,C,F
+final: F
+transitions:
+S,_ [_,$] --> A
+A,_ [_,S] --> B
+B,a [A,_] --> B
+B,_ [S,_] --> C
+C,_ [_,A] --> B
+B,_ [$,_] --> F
+end.
+
+dfa: n
+finite: n
+
+words:
+end.

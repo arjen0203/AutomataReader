@@ -1,0 +1,9 @@
+grammar:  
+S:a
+end. 
+ 
+dfa: n 
+finite: n 
+ 
+words:
+end.
