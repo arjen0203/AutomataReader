@@ -74,19 +74,21 @@ namespace Automata_Reader.CFG_Code
             while (changesCount > 0)
             {
                 changesCount = 0;
-                RemoveUnneededEpsilon(cfg);
+                CleanCFG(cfg);
                 if (CFGReduction(cfg)) changesCount++;
+                CleanCFG(cfg);
                 //if (SubstituteEmptyTransitions(cfg)) changesCount++;
-                //RemoveSelfPointingTrans(cfg);
-                //RemoveDoubles(cfg);
+                //CleanCFG(cfg);
                 //changesCount = 0;
             }
-            RemoveUnneededEpsilon(cfg);
-            if (SubstituteEmptyTransitions(cfg)) changesCount++;
-            RemoveUnneededEpsilon(cfg);
-            RemoveDoubles(cfg);
-            RemoveSelfPointingTrans(cfg);
             if (CFGReduction(cfg)) changesCount++;
+        }
+
+        private void CleanCFG(CFG cfg)
+        {
+            RemoveUnneededEpsilon(cfg);
+            RemoveSelfPointingTrans(cfg);
+            RemoveDoubles(cfg);
         }
 
         private bool CFGReduction(CFG cfg)
@@ -227,12 +229,13 @@ namespace Automata_Reader.CFG_Code
 
         private bool SubstituteEmptyTransitions(CFG cfg)
         {
-            bool changes = false;
+            int transAmountStartCFG = cfg.ReturnTotalTransitionAmount();
             foreach (KeyValuePair<string, ConvertTransition> epsilonVariable in cfg.AllTransitions)
             {
                 List<List<IConvertLetterOrTransition>> pruneList = new List<List<IConvertLetterOrTransition>>();
                 List<List<IConvertLetterOrTransition>> transitions = epsilonVariable.Value.ToVariablesOrLetters;
-                for (int i = 0; i < transitions.Count; i++) {
+                int startCount = transitions.Count;
+                for (int i = 0; i < startCount; i++) {
                     if (transitions[i].Count == 1 && transitions[i][0].ToString().Equals("_"))
                     {
                         pruneList.Add(transitions[i]);
@@ -255,7 +258,9 @@ namespace Automata_Reader.CFG_Code
                     epsilonVariable.Value.ToVariablesOrLetters.Remove(prune);
                 }
             }
-            return changes;
+            int newAMount = cfg.ReturnTotalTransitionAmount();
+            if (transAmountStartCFG != cfg.ReturnTotalTransitionAmount()) return true;
+            return false;
         }
 
         private List<List<IConvertLetterOrTransition>> CreateNewEpsilonTransitions(List<IConvertLetterOrTransition> currentTransition, ConvertTransition epsilonVariable , CFG cfg)
