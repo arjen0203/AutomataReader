@@ -76,11 +76,19 @@ namespace Automata_Reader.CFG_Code
                 changesCount = 0;
                 //RemoveUnneededEpsilon(cfg);
                 //if (CFGReduction(cfg)) changesCount++;
-/*              if (SubstituteEmptyTransitions(cfg)) changesCount++;
-                RemoveSelfPointingTrans(cfg);
-                RemoveDoubles(cfg);*/
+                //if (SubstituteEmptyTransitions(cfg)) changesCount++;
+                //RemoveSelfPointingTrans(cfg);
+                //RemoveDoubles(cfg);
                 //changesCount = 0;
             }
+            RemoveUnneededEpsilon(cfg);
+            if (CFGReduction(cfg)) changesCount++;
+            if (SubstituteEmptyTransitions(cfg)) changesCount++;
+            RemoveUnneededEpsilon(cfg);
+            RemoveSelfPointingTrans(cfg);
+            RemoveDoubles(cfg);
+            if (CFGReduction(cfg)) changesCount++;
+            //if (SubstituteEmptyTransitions(cfg)) changesCount++;
         }
 
         private bool CFGReduction(CFG cfg)
@@ -146,9 +154,14 @@ namespace Automata_Reader.CFG_Code
                 transitionLength = allNeededTransitions.Count();
                 foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
                 {
-                    foreach (ConvertTransition variable in valuePair.Value.ReturnAllTransitionVariables())
+                    foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
                     {
-                        if (allNeededTransitions.Contains(variable)) allNeededTransitions.Add(valuePair.Value);
+                        int counter = 0;
+                        foreach (IConvertLetterOrTransition letOrVar in transition)
+                        {
+                            if (allNeededTransitions.Contains(letOrVar)) counter++;
+                        }
+                        if (counter == transition.Count) allNeededTransitions.Add(valuePair.Value);
                     }
                 }
             }
