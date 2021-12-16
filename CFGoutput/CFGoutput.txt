@@ -1,4 +1,11 @@
-SG : FC 
-FC : a FC c 
-FC : _ 
+SF : SS SF 
+SF : SF FF 
+SF : a AA b 
+SF : a b 
+SS : SS SS 
+SS : _ 
+AA : AA AA 
+AA : _ 
+FF : FF FF 
+FF : _ 
 

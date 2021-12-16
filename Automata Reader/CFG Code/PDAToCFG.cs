@@ -74,21 +74,19 @@ namespace Automata_Reader.CFG_Code
             while (changesCount > 0)
             {
                 changesCount = 0;
-                //RemoveUnneededEpsilon(cfg);
-                //if (CFGReduction(cfg)) changesCount++;
+                RemoveUnneededEpsilon(cfg);
+                if (CFGReduction(cfg)) changesCount++;
                 //if (SubstituteEmptyTransitions(cfg)) changesCount++;
                 //RemoveSelfPointingTrans(cfg);
                 //RemoveDoubles(cfg);
                 //changesCount = 0;
             }
             RemoveUnneededEpsilon(cfg);
-            if (CFGReduction(cfg)) changesCount++;
             if (SubstituteEmptyTransitions(cfg)) changesCount++;
             RemoveUnneededEpsilon(cfg);
-            RemoveSelfPointingTrans(cfg);
             RemoveDoubles(cfg);
+            RemoveSelfPointingTrans(cfg);
             if (CFGReduction(cfg)) changesCount++;
-            //if (SubstituteEmptyTransitions(cfg)) changesCount++;
         }
 
         private bool CFGReduction(CFG cfg)
@@ -230,30 +228,81 @@ namespace Automata_Reader.CFG_Code
         private bool SubstituteEmptyTransitions(CFG cfg)
         {
             bool changes = false;
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, ConvertTransition> epsilonVariable in cfg.AllTransitions)
             {
-                foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
-                {
-                    if (TransitionContainsOnlyVariables(transition))
+                List<List<IConvertLetterOrTransition>> pruneList = new List<List<IConvertLetterOrTransition>>();
+                List<List<IConvertLetterOrTransition>> transitions = epsilonVariable.Value.ToVariablesOrLetters;
+                for (int i = 0; i < transitions.Count; i++) {
+                    if (transitions[i].Count == 1 && transitions[i][0].ToString().Equals("_"))
                     {
-                        for (int i = 0; i < transition.Count; i++)
+                        pruneList.Add(transitions[i]);
+                        foreach (KeyValuePair<string, ConvertTransition> variable in cfg.AllTransitions)
                         {
-                            if (transition[i].IsVariable() /*&& !transition[i].ToString().Equals(valuePair.Value.ToString())*/)
+                            List<List<IConvertLetterOrTransition>> addList = new List<List<IConvertLetterOrTransition>>();
+                            foreach (List<IConvertLetterOrTransition> transition in variable.Value.ToVariablesOrLetters)
                             {
-                                foreach (List<IConvertLetterOrTransition> trans2 in ((ConvertTransition)transition[i]).ToVariablesOrLetters)
+                                if (transition.Contains(epsilonVariable.Value))
                                 {
-                                    if (trans2.Count == 1 && trans2[0].ToString().Equals("_"))
-                                    {
-                                        transition[i] = GetOrCreateNewSymbol('_', cfg);
-                                        changes = true;
-                                    }
+                                    addList.AddRange(CreateNewEpsilonTransitions(transition, epsilonVariable.Value, cfg));
                                 }
                             }
+                            variable.Value.ToVariablesOrLetters.AddRange(addList);
                         }
                     }
                 }
+                foreach (List<IConvertLetterOrTransition> prune in pruneList)
+                {
+                    epsilonVariable.Value.ToVariablesOrLetters.Remove(prune);
+                }
             }
             return changes;
+        }
+
+        private List<List<IConvertLetterOrTransition>> CreateNewEpsilonTransitions(List<IConvertLetterOrTransition> currentTransition, ConvertTransition epsilonVariable , CFG cfg)
+        {
+            List<List<IConvertLetterOrTransition>> createNewEpsilonTransitions = new List<List<IConvertLetterOrTransition>>();
+
+            List<int> locations = new List<int>();
+            for(int i = 0; i < currentTransition.Count; i++)
+            {
+                if (currentTransition[i] == epsilonVariable) locations.Add(i);
+            }
+
+            List<List<int>> combinations = PowerSet(locations);
+            combinations.RemoveAt(0);
+            foreach(List<int> combination in combinations)
+            {
+                List<IConvertLetterOrTransition> transitionCopy = new List<IConvertLetterOrTransition>(currentTransition);
+                foreach (int position in combination)
+                {
+                    transitionCopy[position] = GetOrCreateNewSymbol('_', cfg);
+                }
+                createNewEpsilonTransitions.Add(transitionCopy);
+            }
+
+            return createNewEpsilonTransitions;
+        }
+
+        private static List<List<int>> PowerSet(List<int> input)
+        {
+            int n = input.Count;
+            int powerSetCount = 1 << n;
+            var ans = new List<List<int>>();
+
+            for (int setMask = 0; setMask < powerSetCount; setMask++)
+            {
+                var s = new List<int>();
+                for (int i = 0; i < n; i++)
+                {
+                    if ((setMask & (1 << i)) > 0)
+                    {
+                        s.Add(input[i]);
+                    }
+                }
+                ans.Add(s);
+            }
+
+            return ans;
         }
 
         private bool TransitionContainsOnlyVariables(List<IConvertLetterOrTransition> transition)
