@@ -1,18 +1,3 @@
-SG : SS SG 
-SG : SG GG 
 SG : FC 
-SS : _ 
-SS : SS SS 
-CC : _ 
-CC : CC CC 
-FC : FC CC 
-FC : FF FC 
 FC : a FC c 
-FC : DD 
-DD : _ 
-DD : DD DD 
-FF : _ 
-FF : FF FF 
-GG : _ 
-GG : GG GG 
 

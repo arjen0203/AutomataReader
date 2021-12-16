@@ -77,11 +77,9 @@ namespace Automata_Reader.CFG_Code
                 CleanCFG(cfg);
                 if (CFGReduction(cfg)) changesCount++;
                 CleanCFG(cfg);
-                //if (SubstituteEmptyTransitions(cfg)) changesCount++;
-                //CleanCFG(cfg);
-                //changesCount = 0;
+                if (SubstituteEmptyTransitions(cfg)) changesCount++;
+                CleanCFG(cfg);
             }
-            if (CFGReduction(cfg)) changesCount++;
         }
 
         private void CleanCFG(CFG cfg)
@@ -284,6 +282,13 @@ namespace Automata_Reader.CFG_Code
                 }
                 createNewEpsilonTransitions.Add(transitionCopy);
             }
+
+            bool deleteFinalTrans = true;
+            foreach (IConvertLetterOrTransition letOrTrans in createNewEpsilonTransitions[createNewEpsilonTransitions.Count - 1])
+            {
+                if (letOrTrans != GetOrCreateNewSymbol('_', cfg)) deleteFinalTrans = false;
+            }
+            if (deleteFinalTrans) createNewEpsilonTransitions.RemoveAt(createNewEpsilonTransitions.Count - 1);
 
             return createNewEpsilonTransitions;
         }
