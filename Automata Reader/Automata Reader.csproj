@@ -47,11 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CFG Code\Transitions\CFG.cs" />
-    <Compile Include="CFG Code\Transitions\ConvertLetter.cs" />
-    <Compile Include="CFG Code\Transitions\ConvertTransition.cs" />
+    <Compile Include="CFG Code\Transitions\CFGTerminal.cs" />
+    <Compile Include="CFG Code\Transitions\CFGVariable.cs" />
     <Compile Include="CFG Code\CFGVariableRule.cs" />
     <Compile Include="CFG Code\CFGToPDA.cs" />
-    <Compile Include="CFG Code\Transitions\IConvertLetterOrTransition.cs" />
+    <Compile Include="CFG Code\Transitions\ILetterOrVariable.cs" />
     <Compile Include="DFAconnection.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DFAautomata.cs" />

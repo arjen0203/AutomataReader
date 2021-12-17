@@ -1,0 +1,27 @@
+# (a | b)* and #a=#b and starts with a ends with b
+alphabet: ab
+stack: xy
+states: S,A,F
+final: F
+transitions:
+S,_ [_,x] --> A
+A,a [_,y] --> A
+A,b [y,_] --> A
+A,_ [x,_] --> F
+end.
+
+dfa: n
+finite: n
+
+words:
+a,n
+,y
+b,n
+aa,n
+ab,y
+bb,n
+abb,n
+aab,n
+abab,y
+aabb,y
+end.

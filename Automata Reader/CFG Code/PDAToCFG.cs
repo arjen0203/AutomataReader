@@ -28,18 +28,21 @@ namespace Automata_Reader.CFG_Code
             {
                 foreach (Node toNode in automata.nodes)
                 {
-                    ConvertTransition transition = GetOrCreateNewTransition(fromNode, toNode, cfg.AllTransitions);
+                    CFGVariable transition = GetOrCreateNewTransition(fromNode, toNode, cfg.AllTransitions);
 
                     //type 1 transitions
-                    if (fromNode == toNode) transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { GetOrCreateNewSymbol('_', cfg) });
+                    if (fromNode == toNode) transition.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { GetOrCreateNewSymbol('_', cfg) });
 
                     //type 2 transitions
                     foreach (Node betweenNode in automata.nodes)
                     {
-                        transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() {
-                            GetOrCreateNewTransition(fromNode, betweenNode, cfg.AllTransitions),
-                            GetOrCreateNewTransition(betweenNode, toNode, cfg.AllTransitions)
-                        });
+                        if (betweenNode != fromNode && betweenNode != toNode)
+                        {
+                            transition.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() {
+                                GetOrCreateNewTransition(fromNode, betweenNode, cfg.AllTransitions),
+                                GetOrCreateNewTransition(betweenNode, toNode, cfg.AllTransitions)
+                            });
+                        }
                     }
 
                 }
@@ -54,8 +57,8 @@ namespace Automata_Reader.CFG_Code
                             {
                                 if (secondConn.PopStack == conn.PushStack)
                                 {
-                                    ConvertTransition type3Transition = GetOrCreateNewTransition(fromNode, secondConn.ToNode, cfg.AllTransitions);
-                                    type3Transition.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() {
+                                    CFGVariable type3Transition = GetOrCreateNewTransition(fromNode, secondConn.ToNode, cfg.AllTransitions);
+                                    type3Transition.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() {
                                         GetOrCreateNewSymbol(conn.Symbol, cfg),
                                         GetOrCreateNewTransition(conn.ToNode, secondConnNode, cfg.AllTransitions),
                                         GetOrCreateNewSymbol(secondConn.Symbol, cfg),
@@ -102,10 +105,10 @@ namespace Automata_Reader.CFG_Code
 
         private void RemoveDoubles(CFG cfg)
         {
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
-                List<List<IConvertLetterOrTransition>> transitions = valuePair.Value.ToVariablesOrLetters;
-                List<List<IConvertLetterOrTransition>> pruneList = new List<List<IConvertLetterOrTransition>>();
+                List<List<ILetterOrVariable>> transitions = valuePair.Value.ToVariablesOrLetters;
+                List<List<ILetterOrVariable>> pruneList = new List<List<ILetterOrVariable>>();
                 int startJ = 0;
                 for (int i = 0; i < transitions.Count; i++)
                 {
@@ -118,14 +121,14 @@ namespace Automata_Reader.CFG_Code
                         }
                     }
                 }
-                foreach (List<IConvertLetterOrTransition> prune in pruneList)
+                foreach (List<ILetterOrVariable> prune in pruneList)
                 {
                     valuePair.Value.ToVariablesOrLetters.Remove(prune);
                 }
             }
         }
  
-        private bool AreListEqual(List<IConvertLetterOrTransition> list1, List<IConvertLetterOrTransition> list2)
+        private bool AreListEqual(List<ILetterOrVariable> list1, List<ILetterOrVariable> list2)
         {
             if (list1.Count != list2.Count) return false;
             for (int i = 0; i < list1.Count; i++) {
@@ -137,10 +140,10 @@ namespace Automata_Reader.CFG_Code
         private void CFGReductionPhase1(CFG cfg)
         {
             //phase 1
-            HashSet<ConvertTransition> allNeededTransitions = new HashSet<ConvertTransition>();
+            HashSet<CFGVariable> allNeededTransitions = new HashSet<CFGVariable>();
 
             //create first list containing terminal symbols
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
                 if (valuePair.Value.ContainsTerminals()) allNeededTransitions.Add(valuePair.Value);
             }
@@ -150,12 +153,12 @@ namespace Automata_Reader.CFG_Code
             while (transitionLength != allNeededTransitions.Count())
             {
                 transitionLength = allNeededTransitions.Count();
-                foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+                foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
                 {
-                    foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
+                    foreach (List<ILetterOrVariable> transition in valuePair.Value.ToVariablesOrLetters)
                     {
                         int counter = 0;
-                        foreach (IConvertLetterOrTransition letOrVar in transition)
+                        foreach (ILetterOrVariable letOrVar in transition)
                         {
                             if (allNeededTransitions.Contains(letOrVar)) counter++;
                         }
@@ -169,21 +172,21 @@ namespace Automata_Reader.CFG_Code
 
         private void CFGReductionPhase2(CFG cfg)
         {
-            HashSet<IConvertLetterOrTransition> allReachableTransitions = new HashSet<IConvertLetterOrTransition>();
+            HashSet<ILetterOrVariable> allReachableTransitions = new HashSet<ILetterOrVariable>();
             allReachableTransitions.Add(cfg.StartVariable);
             int transitionLength = 0;
             while (transitionLength != allReachableTransitions.Count())
             {
                 transitionLength = allReachableTransitions.Count();
 
-                HashSet<IConvertLetterOrTransition> allReachableTransitionsCopy = new HashSet<IConvertLetterOrTransition>(allReachableTransitions);
-                foreach (IConvertLetterOrTransition reachableTransition in allReachableTransitionsCopy)
+                HashSet<ILetterOrVariable> allReachableTransitionsCopy = new HashSet<ILetterOrVariable>(allReachableTransitions);
+                foreach (ILetterOrVariable reachableTransition in allReachableTransitionsCopy)
                 {
                     if (reachableTransition.IsVariable())
                     {
-                        foreach (List<IConvertLetterOrTransition> varOrLetList in cfg.AllTransitions[reachableTransition.ToString()].ToVariablesOrLetters)
+                        foreach (List<ILetterOrVariable> varOrLetList in cfg.AllTransitions[reachableTransition.ToString()].ToVariablesOrLetters)
                         {
-                            foreach (IConvertLetterOrTransition varOrLet in varOrLetList)
+                            foreach (ILetterOrVariable varOrLet in varOrLetList)
                             {
                                 allReachableTransitions.Add(varOrLet);
                             }
@@ -198,14 +201,14 @@ namespace Automata_Reader.CFG_Code
         private void RemoveSelfPointingTrans(CFG cfg)
         {
             
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
-                List<List<IConvertLetterOrTransition>> pruneList = new List<List<IConvertLetterOrTransition>>();
-                foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
+                List<List<ILetterOrVariable>> pruneList = new List<List<ILetterOrVariable>>();
+                foreach (List<ILetterOrVariable> transition in valuePair.Value.ToVariablesOrLetters)
                 {
                     if (transition.Count == 1 && transition[0].ToString().Equals(valuePair.Value.ToString())) pruneList.Add(transition);
                 }
-                foreach (List<IConvertLetterOrTransition> prune in pruneList)
+                foreach (List<ILetterOrVariable> prune in pruneList)
                 {
                     valuePair.Value.ToVariablesOrLetters.Remove(prune);
                 }
@@ -214,9 +217,9 @@ namespace Automata_Reader.CFG_Code
 
         public void RemoveUnneededEpsilon(CFG cfg)
         {
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
-                foreach (List<IConvertLetterOrTransition> transition in valuePair.Value.ToVariablesOrLetters)
+                foreach (List<ILetterOrVariable> transition in valuePair.Value.ToVariablesOrLetters)
                 {
                     transition.RemoveAll(a => a == cfg.Terminals['_']);
                     //add 1 epsilon if would be empty
@@ -228,22 +231,24 @@ namespace Automata_Reader.CFG_Code
         private bool SubstituteEmptyTransitions(CFG cfg)
         {
             int transAmountStartCFG = cfg.ReturnTotalTransitionAmount();
-            foreach (KeyValuePair<string, ConvertTransition> epsilonVariable in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> epsilonVariable in cfg.AllTransitions)
             {
-                List<List<IConvertLetterOrTransition>> pruneList = new List<List<IConvertLetterOrTransition>>();
-                List<List<IConvertLetterOrTransition>> transitions = epsilonVariable.Value.ToVariablesOrLetters;
+                List<List<ILetterOrVariable>> pruneList = new List<List<ILetterOrVariable>>();
+                List<List<ILetterOrVariable>> transitions = epsilonVariable.Value.ToVariablesOrLetters;
+                bool blockDeletion = false;
                 int startCount = transitions.Count;
                 for (int i = 0; i < startCount; i++) {
                     if (transitions[i].Count == 1 && transitions[i][0].ToString().Equals("_"))
                     {
                         pruneList.Add(transitions[i]);
-                        foreach (KeyValuePair<string, ConvertTransition> variable in cfg.AllTransitions)
+                        foreach (KeyValuePair<string, CFGVariable> variable in cfg.AllTransitions)
                         {
-                            List<List<IConvertLetterOrTransition>> addList = new List<List<IConvertLetterOrTransition>>();
-                            foreach (List<IConvertLetterOrTransition> transition in variable.Value.ToVariablesOrLetters)
+                            List<List<ILetterOrVariable>> addList = new List<List<ILetterOrVariable>>();
+                            foreach (List<ILetterOrVariable> transition in variable.Value.ToVariablesOrLetters)
                             {
                                 if (transition.Contains(epsilonVariable.Value))
                                 {
+                                    if (variable.Value == epsilonVariable.Value) blockDeletion = true;
                                     addList.AddRange(CreateNewEpsilonTransitions(transition, epsilonVariable.Value, cfg));
                                 }
                             }
@@ -251,19 +256,21 @@ namespace Automata_Reader.CFG_Code
                         }
                     }
                 }
-                foreach (List<IConvertLetterOrTransition> prune in pruneList)
+                foreach (List<ILetterOrVariable> prune in pruneList)
                 {
-                    epsilonVariable.Value.ToVariablesOrLetters.Remove(prune);
+                    if (!blockDeletion) epsilonVariable.Value.ToVariablesOrLetters.Remove(prune);
                 }
             }
+            CleanCFG(cfg);
             int newAMount = cfg.ReturnTotalTransitionAmount();
+
             if (transAmountStartCFG != cfg.ReturnTotalTransitionAmount()) return true;
             return false;
         }
 
-        private List<List<IConvertLetterOrTransition>> CreateNewEpsilonTransitions(List<IConvertLetterOrTransition> currentTransition, ConvertTransition epsilonVariable , CFG cfg)
+        private List<List<ILetterOrVariable>> CreateNewEpsilonTransitions(List<ILetterOrVariable> currentTransition, CFGVariable epsilonVariable , CFG cfg)
         {
-            List<List<IConvertLetterOrTransition>> createNewEpsilonTransitions = new List<List<IConvertLetterOrTransition>>();
+            List<List<ILetterOrVariable>> createNewEpsilonTransitions = new List<List<ILetterOrVariable>>();
 
             List<int> locations = new List<int>();
             for(int i = 0; i < currentTransition.Count; i++)
@@ -272,23 +279,15 @@ namespace Automata_Reader.CFG_Code
             }
 
             List<List<int>> combinations = PowerSet(locations);
-            combinations.RemoveAt(0);
             foreach(List<int> combination in combinations)
             {
-                List<IConvertLetterOrTransition> transitionCopy = new List<IConvertLetterOrTransition>(currentTransition);
+                List<ILetterOrVariable> transitionCopy = new List<ILetterOrVariable>(currentTransition);
                 foreach (int position in combination)
                 {
                     transitionCopy[position] = GetOrCreateNewSymbol('_', cfg);
                 }
                 createNewEpsilonTransitions.Add(transitionCopy);
             }
-
-            bool deleteFinalTrans = true;
-            foreach (IConvertLetterOrTransition letOrTrans in createNewEpsilonTransitions[createNewEpsilonTransitions.Count - 1])
-            {
-                if (letOrTrans != GetOrCreateNewSymbol('_', cfg)) deleteFinalTrans = false;
-            }
-            if (deleteFinalTrans) createNewEpsilonTransitions.RemoveAt(createNewEpsilonTransitions.Count - 1);
 
             return createNewEpsilonTransitions;
         }
@@ -315,37 +314,37 @@ namespace Automata_Reader.CFG_Code
             return ans;
         }
 
-        private bool TransitionContainsOnlyVariables(List<IConvertLetterOrTransition> transition)
+        private bool TransitionContainsOnlyVariables(List<ILetterOrVariable> transition)
         {
-            foreach (IConvertLetterOrTransition letOrVar in transition)
+            foreach (ILetterOrVariable letOrVar in transition)
             {
                 if (!letOrVar.IsVariable()) return false;
             }
             return true;
         }
 
-        public bool TransitionContainsOnlySymbols(List<IConvertLetterOrTransition> transition)
+        public bool TransitionContainsOnlySymbols(List<ILetterOrVariable> transition)
         {
-            foreach (IConvertLetterOrTransition letOrVar in transition)
+            foreach (ILetterOrVariable letOrVar in transition)
             {
                 if (letOrVar.IsVariable()) return false;
             }
             return true;
         }
 
-        private ConvertTransition GetOrCreateNewTransition(Node leftNode, Node rightNode, Dictionary<string, ConvertTransition> allTransitions)
+        private CFGVariable GetOrCreateNewTransition(Node leftNode, Node rightNode, Dictionary<string, CFGVariable> allTransitions)
         {
             string key = $"{leftNode.Name}{rightNode.Name}";
             if (allTransitions.ContainsKey(key)) return allTransitions[key];
-            ConvertTransition newTransition = new ConvertTransition(leftNode, rightNode);
+            CFGVariable newTransition = new CFGVariable(leftNode, rightNode);
             allTransitions.Add(key, newTransition);
             return newTransition;
         }
 
-        private ConvertLetter GetOrCreateNewSymbol(char symbol, CFG cfg)
+        private CFGTerminal GetOrCreateNewSymbol(char symbol, CFG cfg)
         {
             if (cfg.Terminals.ContainsKey(symbol)) return cfg.Terminals[symbol];
-            ConvertLetter newLetter = new ConvertLetter(symbol);
+            CFGTerminal newLetter = new CFGTerminal(symbol);
             cfg.Terminals.Add(symbol, newLetter);
             return newLetter;
         }
@@ -353,7 +352,7 @@ namespace Automata_Reader.CFG_Code
         private string PrintTransitions(CFG cfg)
         {
             string output = "";
-            foreach (KeyValuePair<string, ConvertTransition> valuePair in cfg.AllTransitions)
+            foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
                 output += $"{valuePair.Value.ReturnString()}";
             }
@@ -363,25 +362,25 @@ namespace Automata_Reader.CFG_Code
         private CFG testCFG()
         {
             CFG cfg = new CFG(new Node("S"), new Node("S"));
-            ConvertLetter aLet = new ConvertLetter('a');
-            ConvertLetter cLet = new ConvertLetter('c');
-            ConvertLetter eLet = new ConvertLetter('e');
+            CFGTerminal aLet = new CFGTerminal('a');
+            CFGTerminal cLet = new CFGTerminal('c');
+            CFGTerminal eLet = new CFGTerminal('e');
             cfg.Terminals.Add('a', aLet);
             cfg.Terminals.Add('c', cLet);
             cfg.Terminals.Add('e', eLet);
 
-            ConvertTransition sTrans = cfg.AllTransitions["SS"];
-            ConvertTransition aTrans = new ConvertTransition(new Node("A"), new Node("A"));
-            ConvertTransition bTrans = new ConvertTransition(new Node("B"), new Node("B"));
-            ConvertTransition cTrans = new ConvertTransition(new Node("C"), new Node("C"));
-            ConvertTransition eTrans = new ConvertTransition(new Node("E"), new Node("E"));
-            sTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { aTrans, cTrans });
-            sTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { bTrans });
-            aTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { aLet });
-            cTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { cLet });
-            cTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { bTrans, cTrans });
-            eTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { aLet, aTrans });
-            eTrans.ToVariablesOrLetters.Add(new List<IConvertLetterOrTransition>() { eTrans });
+            CFGVariable sTrans = cfg.AllTransitions["SS"];
+            CFGVariable aTrans = new CFGVariable(new Node("A"), new Node("A"));
+            CFGVariable bTrans = new CFGVariable(new Node("B"), new Node("B"));
+            CFGVariable cTrans = new CFGVariable(new Node("C"), new Node("C"));
+            CFGVariable eTrans = new CFGVariable(new Node("E"), new Node("E"));
+            sTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aTrans, cTrans });
+            sTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { bTrans });
+            aTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aLet });
+            cTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { cLet });
+            cTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { bTrans, cTrans });
+            eTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aLet, aTrans });
+            eTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { eTrans });
 
             cfg.AllTransitions.Add("AA", aTrans);
             cfg.AllTransitions.Add("CC", cTrans);

@@ -1,3 +1,10 @@
 SG : FC 
+SG : _ 
+BC : b BC c 
+BC : _ 
+BC : b c 
 FC : a FC c 
+FC : BC 
+FC : _ 
+FC : a c 
 

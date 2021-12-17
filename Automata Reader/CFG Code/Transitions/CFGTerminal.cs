@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Automata_Reader.CFG_Code.Transitions
 {
-    class ConvertLetter : IConvertLetterOrTransition
+    class CFGTerminal : ILetterOrVariable
     {
         public char Symbol { get; private set; }
 
-        public ConvertLetter(char symbol)
+        public CFGTerminal(char symbol)
         {
             this.Symbol = symbol;
         }
