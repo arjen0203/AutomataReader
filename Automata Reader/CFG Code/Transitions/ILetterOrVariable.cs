@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Automata_Reader.CFG_Code.Transitions
 {
-    interface IConvertLetterOrTransition
+    interface ILetterOrVariable
     {
         bool IsVariable();
     }

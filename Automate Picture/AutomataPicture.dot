@@ -2,10 +2,21 @@ digraph myAutomaton {
 rankdir=LR; 
 "" [shape=none] 
 "S" [shape=circle] 
-"A" [shape=circle] 
-"F" [shape=doublecircle] 
+"B" [shape=circle] 
+"C" [shape=circle] 
+"D" [shape=circle] 
+"E" [shape=circle] 
+"F" [shape=circle] 
+"G" [shape=doublecircle] 
 
 "" -> "S" 
-"S" -> "A" [label="a [_,x]"] 
-"A" -> "F" [label="b [x,_]"] 
+"S" -> "F" [label="_ [_,z]"] 
+"B" -> "B" [label="b [_,x]"] 
+"B" -> "E" [label="_ [_,y]"] 
+"C" -> "C" [label="c [x,_]"] 
+"C" -> "G" [label="_ [z,_]"] 
+"D" -> "B" [label="_ [y,_]"] 
+"E" -> "C" [label="_ [y,_]"] 
+"F" -> "F" [label="a [_,x]"] 
+"F" -> "D" [label="_ [_,y]"] 
 }

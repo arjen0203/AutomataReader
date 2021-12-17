@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Automata_Reader.CFG_Code.Transitions
 {
-    class ConvertTransition : IConvertLetterOrTransition
+    class CFGVariable : ILetterOrVariable
     {
         public Node FromNode { get; private set; }
         public Node ToNode { get; private set; }
        
-        public List<List<IConvertLetterOrTransition>> ToVariablesOrLetters { get; private set; }
+        public List<List<ILetterOrVariable>> ToVariablesOrLetters { get; private set; }
 
-        public ConvertTransition(Node fromNode, Node toNode)
+        public CFGVariable(Node fromNode, Node toNode)
         {
             this.FromNode = fromNode;
             this.ToNode = toNode;
-            this.ToVariablesOrLetters = new List<List<IConvertLetterOrTransition>>();
+            this.ToVariablesOrLetters = new List<List<ILetterOrVariable>>();
         }
 
         public bool IsVariable()
@@ -25,14 +25,14 @@ namespace Automata_Reader.CFG_Code.Transitions
             return true;
         }
 
-        public List<ConvertTransition> ReturnAllTransitionVariables()
+        public List<CFGVariable> ReturnAllTransitionVariables()
         {
-            List<ConvertTransition> AllVariables = new List<ConvertTransition>();
-            foreach (List<IConvertLetterOrTransition> outputList in ToVariablesOrLetters)
+            List<CFGVariable> AllVariables = new List<CFGVariable>();
+            foreach (List<ILetterOrVariable> outputList in ToVariablesOrLetters)
             {
-                foreach (IConvertLetterOrTransition letterOrTrans in outputList)
+                foreach (ILetterOrVariable letterOrTrans in outputList)
                 {
-                    if (letterOrTrans.IsVariable()) AllVariables.Add((ConvertTransition)letterOrTrans);
+                    if (letterOrTrans.IsVariable()) AllVariables.Add((CFGVariable)letterOrTrans);
                 }
             }
             return AllVariables;
@@ -40,9 +40,9 @@ namespace Automata_Reader.CFG_Code.Transitions
 
         public bool ContainsTerminals()
         {
-            foreach (List<IConvertLetterOrTransition> outputList in ToVariablesOrLetters)
+            foreach (List<ILetterOrVariable> outputList in ToVariablesOrLetters)
             {
-                foreach (IConvertLetterOrTransition letterOrTrans in outputList)
+                foreach (ILetterOrVariable letterOrTrans in outputList)
                 {
                     if (!letterOrTrans.IsVariable()) return true;
                 }
@@ -56,10 +56,10 @@ namespace Automata_Reader.CFG_Code.Transitions
         {
             string fromVariable = $"{this.FromNode.Name}{this.ToNode.Name}";
             string output = "";
-            foreach (List<IConvertLetterOrTransition> outputList in ToVariablesOrLetters)
+            foreach (List<ILetterOrVariable> outputList in ToVariablesOrLetters)
             {
                 output += $"{fromVariable} : ";
-                foreach (IConvertLetterOrTransition letterOrTrans in outputList)
+                foreach (ILetterOrVariable letterOrTrans in outputList)
                 {
                     output += $"{letterOrTrans} ";
                 }
