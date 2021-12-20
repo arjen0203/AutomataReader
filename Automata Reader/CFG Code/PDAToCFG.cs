@@ -9,17 +9,17 @@ namespace Automata_Reader.CFG_Code
 {
     class PDAToCFG
     {
+        
         public string ConvertPDAToCFGToString(Automata automata)
         {
             CFG cfg = new CFG(automata.nodes[0], automata.nodes[automata.nodes.Count - 1]);
 
 
             AddType1AndType2Transitions(automata, cfg);
-            //cfg = testCFG();
             SimplifyCFG(cfg);
 
 
-            return PrintTransitions(cfg);
+            return PrintTransitions(cfg, automata);
         }
 
         public void AddType1AndType2Transitions(Automata automata, CFG cfg)
@@ -349,44 +349,24 @@ namespace Automata_Reader.CFG_Code
             return newLetter;
         }
 
-        private string PrintTransitions(CFG cfg)
+        private string PrintTransitions(CFG cfg, Automata automata)
         {
-            string output = "";
+            Dictionary<string, char> charStates = new Dictionary<string, char>();
+            string output = "grammar:\r\n";
             foreach (KeyValuePair<string, CFGVariable> valuePair in cfg.AllTransitions)
             {
-                output += $"{valuePair.Value.ReturnString()}";
+                output += $"{valuePair.Value.ReturnString(charStates)}";
             }
+            output += "end. \r\n\r\ndfa: n\r\nfinite:n\r\n\r\nwords:\r\n";
+
+            foreach (TestWord word in automata.testWords)
+            {
+                output += $"{new string(word.word)}, {(word.accapted ? 'y' : 'n')} \r\n";
+            }
+
+            output += "end.";
             return output;
         }
 
-        private CFG testCFG()
-        {
-            CFG cfg = new CFG(new Node("S"), new Node("S"));
-            CFGTerminal aLet = new CFGTerminal('a');
-            CFGTerminal cLet = new CFGTerminal('c');
-            CFGTerminal eLet = new CFGTerminal('e');
-            cfg.Terminals.Add('a', aLet);
-            cfg.Terminals.Add('c', cLet);
-            cfg.Terminals.Add('e', eLet);
-
-            CFGVariable sTrans = cfg.AllTransitions["SS"];
-            CFGVariable aTrans = new CFGVariable(new Node("A"), new Node("A"));
-            CFGVariable bTrans = new CFGVariable(new Node("B"), new Node("B"));
-            CFGVariable cTrans = new CFGVariable(new Node("C"), new Node("C"));
-            CFGVariable eTrans = new CFGVariable(new Node("E"), new Node("E"));
-            sTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aTrans, cTrans });
-            sTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { bTrans });
-            aTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aLet });
-            cTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { cLet });
-            cTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { bTrans, cTrans });
-            eTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { aLet, aTrans });
-            eTrans.ToVariablesOrLetters.Add(new List<ILetterOrVariable>() { eTrans });
-
-            cfg.AllTransitions.Add("AA", aTrans);
-            cfg.AllTransitions.Add("CC", cTrans);
-            cfg.AllTransitions.Add("EE", eTrans);
-
-            return cfg;
-        }
     }
 }

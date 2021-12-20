@@ -8,6 +8,7 @@ namespace Automata_Reader.CFG_Code.Transitions
 {
     class CFGVariable : ILetterOrVariable
     {
+        private static readonly char[] stateAlphabet = new char[26] { 'S', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         public Node FromNode { get; private set; }
         public Node ToNode { get; private set; }
        
@@ -52,20 +53,31 @@ namespace Automata_Reader.CFG_Code.Transitions
 
 
 
-        public string ReturnString()
+        public string ReturnString(Dictionary<string, char> charStates)
         {
             string fromVariable = $"{this.FromNode.Name}{this.ToNode.Name}";
             string output = "";
             foreach (List<ILetterOrVariable> outputList in ToVariablesOrLetters)
             {
-                output += $"{fromVariable} : ";
+                output += $"{GetNewStateChar(fromVariable, charStates)} : ";
                 foreach (ILetterOrVariable letterOrTrans in outputList)
                 {
-                    output += $"{letterOrTrans} ";
+                    if (!letterOrTrans.IsVariable()) output += $"{letterOrTrans} ";
+                    else output += $"{GetNewStateChar(letterOrTrans.ToString(), charStates)} ";
                 }
                 output += "\r\n";
             }
             return output;
+        }
+        private char GetNewStateChar(string inputState, Dictionary<string, char> charStates)
+        {
+            
+            if (!charStates.ContainsKey(inputState))
+            {
+                charStates.Add(inputState, stateAlphabet[charStates.Count]);
+                return stateAlphabet[charStates.Count - 1];
+            }
+            return charStates[inputState];
         }
         public override string ToString()
         {

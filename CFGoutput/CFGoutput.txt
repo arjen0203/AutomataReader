@@ -1,10 +1,19 @@
-SG : FC 
-SG : _ 
-BC : b BC c 
-BC : _ 
-BC : b c 
-FC : a FC c 
-FC : BC 
-FC : _ 
-FC : a c 
+grammar:
+S : A 
+S : _ 
+A : a A c 
+A : _ 
+A : a c 
+end. 
 
+dfa: n
+finite:n
+
+words:
+, y 
+ac, y 
+aacc, y 
+aaaccc, y 
+aacccc, n 
+aaaacc, n 
+end.
