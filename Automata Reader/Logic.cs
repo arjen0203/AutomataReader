@@ -1,4 +1,5 @@
 ﻿using Automata_Reader.CFG_Code;
+using Automata_Reader.NFAToRegex;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,11 +18,13 @@ namespace Automata_Reader
 
         public CFGToPDA CFGToPDA { get; private set; }
         public PDAToCFG PDAToCFG { get; private set; }
+        public NFAtoRegEx NFAtoRegEx { get; private set; }
 
         public Logic()
         {
             this.CFGToPDA = new CFGToPDA();
             this.PDAToCFG = new PDAToCFG();
+            this.NFAtoRegEx = new NFAtoRegEx();
         }
         public void ReadLines(string path)
         {
@@ -398,7 +401,7 @@ namespace Automata_Reader
             return null;
         }
 
-        public void CreateAutomatePicture()
+        public void CreateAutomatePicture(string dotString)
         {
             string pathAndName = $"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}\\Automate Picture\\AutomataPicture.dot";
 
@@ -406,9 +409,7 @@ namespace Automata_Reader
 
             StreamWriter writer = new StreamWriter(fileStream);
 
-            string outputDot = GetDotString();
-
-            writer.WriteLine(outputDot);
+            writer.WriteLine(dotString);
 
             writer.Close();
             fileStream.Close();
@@ -815,6 +816,13 @@ namespace Automata_Reader
 
             writer.Close();
             fileStream.Close();
+        }
+
+        public (string, string) ConvertNFAToRegEx()
+        {
+            RegexAutomata regexAutomata = NFAtoRegEx.ConvertNFAToRegEx(automata);
+            CreateAutomatePicture(NFAtoRegEx.CreateRegexAutomataDotString(regexAutomata));
+            return (regexAutomata.Nodes[0].Connections[0].Expression, regexAutomata.Nodes[0].Connections[0].PreExpr);
         }
     }
 }

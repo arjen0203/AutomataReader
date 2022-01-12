@@ -50,6 +50,12 @@
             this.processRegex = new System.Windows.Forms.Button();
             this.ConvertPDA = new System.Windows.Forms.Button();
             this.OpenCFGFile = new System.Windows.Forms.Button();
+            this.createRegexButton = new System.Windows.Forms.Button();
+            this.convertedRegexBox = new System.Windows.Forms.TextBox();
+            this.testRegexButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.prefixRegexBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.automataPictureBox)).BeginInit();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,7 +81,7 @@
             this.pathBox.Name = "pathBox";
             this.pathBox.Size = new System.Drawing.Size(261, 20);
             this.pathBox.TabIndex = 1;
-            this.pathBox.Text = "examplePDAToCFG";
+            this.pathBox.Text = "regexAutomata";
             // 
             // label1
             // 
@@ -91,7 +97,7 @@
             // 
             this.DFACheckBox.AutoCheck = false;
             this.DFACheckBox.AutoSize = true;
-            this.DFACheckBox.Location = new System.Drawing.Point(869, 131);
+            this.DFACheckBox.Location = new System.Drawing.Point(872, 90);
             this.DFACheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.DFACheckBox.Name = "DFACheckBox";
             this.DFACheckBox.Size = new System.Drawing.Size(47, 17);
@@ -154,7 +160,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(866, 204);
+            this.label2.Location = new System.Drawing.Point(869, 259);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 6;
@@ -162,18 +168,20 @@
             // 
             // testBox
             // 
-            this.testBox.Location = new System.Drawing.Point(868, 220);
+            this.testBox.BackColor = System.Drawing.SystemColors.Window;
+            this.testBox.Location = new System.Drawing.Point(868, 275);
             this.testBox.Multiline = true;
             this.testBox.Name = "testBox";
+            this.testBox.ReadOnly = true;
             this.testBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.testBox.Size = new System.Drawing.Size(205, 424);
+            this.testBox.Size = new System.Drawing.Size(205, 369);
             this.testBox.TabIndex = 7;
             // 
             // finiteBox
             // 
             this.finiteBox.AutoCheck = false;
             this.finiteBox.AutoSize = true;
-            this.finiteBox.Location = new System.Drawing.Point(1022, 131);
+            this.finiteBox.Location = new System.Drawing.Point(1022, 90);
             this.finiteBox.Name = "finiteBox";
             this.finiteBox.Size = new System.Drawing.Size(51, 17);
             this.finiteBox.TabIndex = 5;
@@ -222,7 +230,7 @@
             // 
             this.isNfaBox.AutoCheck = false;
             this.isNfaBox.AutoSize = true;
-            this.isNfaBox.Location = new System.Drawing.Point(946, 131);
+            this.isNfaBox.Location = new System.Drawing.Point(946, 90);
             this.isNfaBox.Margin = new System.Windows.Forms.Padding(2);
             this.isNfaBox.Name = "isNfaBox";
             this.isNfaBox.Size = new System.Drawing.Size(47, 17);
@@ -278,11 +286,75 @@
             this.OpenCFGFile.UseVisualStyleBackColor = true;
             this.OpenCFGFile.Click += new System.EventHandler(this.OpenCFGFile_Click);
             // 
+            // createRegexButton
+            // 
+            this.createRegexButton.Enabled = false;
+            this.createRegexButton.Location = new System.Drawing.Point(868, 134);
+            this.createRegexButton.Name = "createRegexButton";
+            this.createRegexButton.Size = new System.Drawing.Size(94, 23);
+            this.createRegexButton.TabIndex = 18;
+            this.createRegexButton.Text = "Create regex";
+            this.createRegexButton.UseVisualStyleBackColor = true;
+            this.createRegexButton.Click += new System.EventHandler(this.ConvertNFAToRegex_Click);
+            // 
+            // convertedRegexBox
+            // 
+            this.convertedRegexBox.BackColor = System.Drawing.SystemColors.Window;
+            this.convertedRegexBox.Location = new System.Drawing.Point(868, 176);
+            this.convertedRegexBox.Name = "convertedRegexBox";
+            this.convertedRegexBox.ReadOnly = true;
+            this.convertedRegexBox.Size = new System.Drawing.Size(205, 20);
+            this.convertedRegexBox.TabIndex = 19;
+            // 
+            // testRegexButton
+            // 
+            this.testRegexButton.Enabled = false;
+            this.testRegexButton.Location = new System.Drawing.Point(969, 134);
+            this.testRegexButton.Name = "testRegexButton";
+            this.testRegexButton.Size = new System.Drawing.Size(105, 23);
+            this.testRegexButton.TabIndex = 20;
+            this.testRegexButton.Text = "Test Regex";
+            this.testRegexButton.UseVisualStyleBackColor = true;
+            this.testRegexButton.Click += new System.EventHandler(this.testRegexButton_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(869, 160);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(29, 13);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "Infix:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(869, 200);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(36, 13);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "Prefix:";
+            // 
+            // prefixRegexBox
+            // 
+            this.prefixRegexBox.BackColor = System.Drawing.SystemColors.Window;
+            this.prefixRegexBox.Location = new System.Drawing.Point(868, 216);
+            this.prefixRegexBox.Name = "prefixRegexBox";
+            this.prefixRegexBox.ReadOnly = true;
+            this.prefixRegexBox.Size = new System.Drawing.Size(205, 20);
+            this.prefixRegexBox.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1086, 708);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.prefixRegexBox);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.testRegexButton);
+            this.Controls.Add(this.convertedRegexBox);
+            this.Controls.Add(this.createRegexButton);
             this.Controls.Add(this.OpenCFGFile);
             this.Controls.Add(this.ConvertPDA);
             this.Controls.Add(this.processRegex);
@@ -339,6 +411,12 @@
         private System.Windows.Forms.Button processRegex;
         private System.Windows.Forms.Button ConvertPDA;
         private System.Windows.Forms.Button OpenCFGFile;
+        private System.Windows.Forms.Button createRegexButton;
+        private System.Windows.Forms.TextBox convertedRegexBox;
+        private System.Windows.Forms.Button testRegexButton;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox prefixRegexBox;
     }
 }
 

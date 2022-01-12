@@ -1,19 +1,24 @@
 grammar:
 S : A 
 S : _ 
-A : a A c 
-A : _ 
-A : a c 
+B : a B b 
+B : _ 
+B : a b 
+A : B 
 end. 
 
 dfa: n
 finite:n
 
 words:
+a, n 
 , y 
-ac, y 
-aacc, y 
-aaaccc, y 
-aacccc, n 
-aaaacc, n 
+b, n 
+aa, n 
+ab, y 
+bb, n 
+abb, n 
+aab, n 
+abab, y 
+aabb, y 
 end.

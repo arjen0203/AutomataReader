@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DeepCloner, Version=0.10.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeepCloner.0.10.3\lib\net40\DeepCloner.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +66,10 @@
     </Compile>
     <Compile Include="Automata.cs" />
     <Compile Include="DFAnode.cs" />
+    <Compile Include="NFAToRegex\NFAtoRegex.cs" />
+    <Compile Include="NFAToRegex\RegexAutomata.cs" />
+    <Compile Include="NFAToRegex\RegexConnection.cs" />
+    <Compile Include="NFAToRegex\RegexNode.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="PDAConfiguration.cs" />
     <Compile Include="CFG Code\PDAToCFG.cs" />
@@ -84,6 +91,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

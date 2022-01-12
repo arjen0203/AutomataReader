@@ -1,22 +1,24 @@
 digraph myAutomatonDFA { 
 rankdir=LR; 
 "" [shape=none] 
-"{B}{C}{D}{E}{S}" [shape=doublecircle] 
-"{B}{C}{D}{E}" [shape=doublecircle] 
-"{B}{E}" [shape=doublecircle] 
+"{1}{11}{3}{4}{7}" [shape=circle] 
+"{1}{2}{4}" [shape=circle] 
+"{12}{6}{8}" [shape=doublecircle] 
+"{12}{6}" [shape=doublecircle] 
+"{10}{12}" [shape=doublecircle] 
 "{SINK}" [shape=circle] 
 
-"" -> "{B}{C}{D}{E}{S}" 
-"{B}{C}{D}{E}{S}" -> "{B}{C}{D}{E}" [label="a"] 
-"{B}{C}{D}{E}{S}" -> "{B}{E}" [label="b"] 
-"{B}{C}{D}{E}{S}" -> "{B}{E}" [label="b"] 
-"{B}{C}{D}{E}" -> "{B}{C}{D}{E}" [label="a"] 
-"{B}{C}{D}{E}" -> "{B}{E}" [label="b"] 
-"{B}{C}{D}{E}" -> "{B}{E}" [label="b"] 
-"{B}{E}" -> "{SINK}" [label="a"] 
-"{B}{E}" -> "{B}{E}" [label="b"] 
-"{B}{E}" -> "{B}{E}" [label="b"] 
+"" -> "{1}{11}{3}{4}{7}" 
+"{1}{11}{3}{4}{7}" -> "{1}{2}{4}" [label="a"] 
+"{1}{11}{3}{4}{7}" -> "{12}{6}{8}" [label="b"] 
+"{1}{2}{4}" -> "{1}{2}{4}" [label="a"] 
+"{1}{2}{4}" -> "{12}{6}" [label="b"] 
+"{12}{6}{8}" -> "{10}{12}" [label="a"] 
+"{12}{6}{8}" -> "{SINK}" [label="b"] 
+"{12}{6}" -> "{SINK}" [label="a"] 
+"{12}{6}" -> "{SINK}" [label="b"] 
+"{10}{12}" -> "{SINK}" [label="a"] 
+"{10}{12}" -> "{SINK}" [label="b"] 
 "{SINK}" -> "{SINK}" [label="a"] 
-"{SINK}" -> "{SINK}" [label="b"] 
 "{SINK}" -> "{SINK}" [label="b"] 
 }

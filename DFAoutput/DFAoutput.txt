@@ -1,19 +1,19 @@
-alphabet: abb
-states: {B}{C}{D}{E}{S},{B}{C}{D}{E},{B}{E},{SINK}
-final: {B}{C}{D}{E}{S},{B}{C}{D}{E},{B}{E},
+alphabet: ab
+states: {1}{11}{3}{4}{7},{1}{2}{4},{12}{6}{8},{12}{6},{10}{12},{SINK}
+final: {12}{6}{8},{12}{6},{10}{12},
 
 transitions:
-{B}{C}{D}{E}{S},a --> {B}{C}{D}{E}
-{B}{C}{D}{E}{S},b --> {B}{E}
-{B}{C}{D}{E}{S},b --> {B}{E}
-{B}{C}{D}{E},a --> {B}{C}{D}{E}
-{B}{C}{D}{E},b --> {B}{E}
-{B}{C}{D}{E},b --> {B}{E}
-{B}{E},a --> {SINK}
-{B}{E},b --> {B}{E}
-{B}{E},b --> {B}{E}
+{1}{11}{3}{4}{7},a --> {1}{2}{4}
+{1}{11}{3}{4}{7},b --> {12}{6}{8}
+{1}{2}{4},a --> {1}{2}{4}
+{1}{2}{4},b --> {12}{6}
+{12}{6}{8},a --> {10}{12}
+{12}{6}{8},b --> {SINK}
+{12}{6},a --> {SINK}
+{12}{6},b --> {SINK}
+{10}{12},a --> {SINK}
+{10}{12},b --> {SINK}
 {SINK},a --> {SINK}
-{SINK},b --> {SINK}
 {SINK},b --> {SINK}
 end.
 
@@ -21,10 +21,4 @@ dfa: n
 finite: n
 
 words:
-, y
-ab, y
-aabb, y
-aaabbb, y
-abbbb, n
-aaaaabbb, n
 end.

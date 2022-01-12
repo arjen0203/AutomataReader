@@ -35,3 +35,6 @@ C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Deb
 C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.CoreCompileInputs.cache
 C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.exe
 C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.pdb
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\bin\Debug\DeepCloner.dll
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\bin\Debug\DeepCloner.xml
+C:\Users\arjen\Documents\Fontys\GitKraken\AutomataReader\Automata Reader\obj\Debug\Automata Reader.csproj.CopyComplete

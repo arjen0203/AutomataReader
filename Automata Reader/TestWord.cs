@@ -15,5 +15,11 @@ namespace Automata_Reader
             this.word = wrd.ToCharArray();
             this.accapted = acc;
         }
+        public TestWord(TestWord testWord)
+        {
+            this.word = new char[testWord.word.Length];
+            Array.Copy(testWord.word, this.word, testWord.word.Length);
+            this.accapted = testWord.accapted;
+        }
     }
 }
